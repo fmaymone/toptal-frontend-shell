@@ -22,7 +22,9 @@ export const appReducers = {
   persistentValues,
   simpleValues,
   drawer,
-  themeSource
+  themeSource,
+  trips: TripListReducer,
+  users: UserListReducer
 }
 
 const appReducer = combineReducers(appReducers)
