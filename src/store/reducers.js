@@ -10,6 +10,8 @@ import simpleValues from './simpleValues/reducer'
 import themeSource from './themeSource/reducer'
 import drawer from './drawer/reducer'
 import { combineReducers } from 'redux'
+import {TripListReducer} from './tripReducer'
+import {UserListReducer} from './userReducer'
 
 export const appReducers = {
   ...firekitReducers,
