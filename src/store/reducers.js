@@ -12,6 +12,7 @@ import drawer from './drawer/reducer'
 import { combineReducers } from 'redux'
 import {TripListReducer} from './tripReducer'
 import {UserListReducer} from './userReducer'
+import {AuthReducer} from './authReducer'
 
 export const appReducers = {
   ...firekitReducers,
@@ -24,7 +25,8 @@ export const appReducers = {
   drawer,
   themeSource,
   trips: TripListReducer,
-  users: UserListReducer
+  users: UserListReducer,
+  auth: AuthReducer
 }
 
 const appReducer = combineReducers(appReducers)

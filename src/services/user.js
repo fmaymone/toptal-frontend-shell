@@ -2,25 +2,16 @@ import AuthService from "./auth";
 
 import User from "../model/user"
 
-export default class UserService extends AuthService {
-  static instance = null;
-
-  constructor(baseUrl) {
-    super(baseUrl);
-    this.promise = this.login("mouse@test.com", "password");
-  }
-
-  static create(baseUrl) {
-    if (UserService.instance === null) {
-      UserService.instance = new UserService(baseUrl);
-    }
-    return UserService.instance;
+export default class UserService {
+  constructor(authService: AuthService, client) {
+    this._auth = authService;
+    this._client = client;
   }
 
   defaultConfig() {
     return {
       headers: {
-          Authorization: this._authToken,
+          Authorization: this._auth.authToken,
           Accept: "application/vnd.trips.v1+json",
           'Content-Type': 'application/json',
       }
@@ -28,12 +19,7 @@ export default class UserService extends AuthService {
   }
 
   async list() {
-    if (this.promise != null) {
-      await this.promise;
-    }
-    if (!this._authenticated) {
-      throw new Exception("Not Authenticated");
-    }
+    this._auth.throwWhenUnauthenticated();
     try {
       let response = await this._client.get("/users", this.defaultConfig());
       console.log("[listUsers]: " + response.data);
@@ -46,9 +32,7 @@ export default class UserService extends AuthService {
   }
 
   async create(user) {
-    if (!this._authenticated) {
-      throw new Exception("Not Authenticated");
-    }
+    this._auth.throwWhenUnauthenticated();
     try {
       let response = await this._client.post("/users",
         user.toJSON(), this.defaultConfig());
@@ -62,9 +46,7 @@ export default class UserService extends AuthService {
   }
 
   async update(user) {
-    if (!this._authenticated) {
-      throw new Exception("Not Authenticated");
-    }
+    this._auth.throwWhenUnauthenticated();
     try {
       let response = await this._client.patch(`/users/${user.id}`, 
         user.toJSON(), this.defaultConfig());
@@ -77,9 +59,7 @@ export default class UserService extends AuthService {
   }
 
   async delete(userId) {
-    if (!this._authenticated) {
-      throw new Exception("Not Authenticated");
-    }
+    this._auth.throwWhenUnauthenticated();
     try {
       let response = await this._client.delete(`/users/${userId}`, this.defaultConfig());
       console.log("[deleteUsers]: ok");
@@ -91,9 +71,7 @@ export default class UserService extends AuthService {
   }
 
   async get(userId) {
-    if (!this._authenticated) {
-      throw new Exception("Not Authenticated");
-    }
+    this._auth.throwWhenUnauthenticated();
     try {
       let response = await this._client.get(`/users/${userId}`, this.defaultConfig());
       console.log("[getUser]: ok");

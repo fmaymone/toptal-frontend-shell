@@ -3,14 +3,6 @@
 import {tripService} from "../../services/toptal-api"
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 
-//SignUp
-export const SIGNUP_SUCCESS = '[Trip] SIGNUP_SUCCESS' 
-export const SIGNUP_ERROR = '[Trip] SIGNUP_ERROR'
-
-//Login
-export const LOGIN_SUCCESS = '[Trip] LOGIN_SUCCESS' 
-export const LOGIN_ERROR = '[Trip] LOGIN_ERROR'
-
 //Create
 export const CREATE_TRIP = '[Trip] CREATE_TRIP' 
 export const CREATE_TRIP_SUCCESS = '[Trip] CREATE_TRIP_SUCCESS' 
@@ -42,47 +34,6 @@ export const COMPLETE_TRIP = 'COMPLETE_TRIP'
 export const DELETE_TRIP = '[Trip] DELETE_TRIP' 
 export const DELETE_TRIP_SUCCESS = '[Trip] DELETE_TRIP_SUCCESS' 
 export const DELETE_TRIP_ERROR = '[Trip] DELETE_TRIP_ERROR' 
-
-
-export function SignUpSuccess(user) {
-    return {
-        type: SIGNUP_SUCCESS,
-        user: user
-    }
-}
-
-export function SignUpError() {
-    return {
-        type: SIGNUP_ERROR
-    }
-}
- 
-export function SignUp(name, email, password, password_confirmation) {
-    return (dispatch, getState) => {
-        return tripService.signUp(name, email, password, password_confirmation).then(res => {
-            if (res) {
-                dispatch(SignUpSuccess({name: name, email: email, password: password}))
-            } else {
-                dispatch(SignUpError())
-            }
-        })
-    }
-}
-
-export function LoginSuccess(token) {
-    return {
-        type: LOGIN_SUCCESS,
-        token: token
-    }
-}
-
-export function Login(email, password) {
-    return (dispatch, getState) => {
-        return tripService.login(email, password).then( token => {
-            dispatch(LoginSuccess(token))
-        })
-    }
-}
 
 export function CreateTrip(trip){
     return (dispatch, getState) => {

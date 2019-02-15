@@ -13,6 +13,10 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
+import { withRouter } from 'react-router-dom';
+import * as AuthActions from '../../store/actions/authActions'
+import { bindActionCreators } from 'redux'; 
+import { connect } from 'react-redux';
 
 const styles = theme => ({
   container: {
@@ -79,13 +83,11 @@ class SignIn extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    try {
       //await Auth.signIn(this.state.email, this.state.password);
       //alert("Logged in");
+      const { email, password, history } = this.state;
+      this.props.actions.Login(email, password, history);
       console.log(this.state);
-    } catch (e) {
-      alert(e.message);
-    }
 
   }
 
@@ -136,4 +138,25 @@ class SignIn extends Component {
     );
   }
 }
-export default withStyles(styles)(SignIn);
+
+SignIn.propTypes = {
+  history: PropTypes.object
+}
+
+const mapStateToProps = (state) => {
+  const { email, password, history } = state;
+
+  return {
+    email,
+    password,
+    history
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(AuthActions, dispatch)     
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(SignIn)));

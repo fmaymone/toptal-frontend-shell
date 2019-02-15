@@ -6,6 +6,7 @@ import makeLoadable from 'rmw-shell/lib/containers/MyLoadable'
 const MyLoadable = (opts, preloadComponents) =>
   makeLoadable({ ...opts, firebase: () => import('./firebase') }, preloadComponents)
 
+//const AsyncSignIn = MyLoadable({ loader: () => import('../pages/SignIn') })
 const AsyncDashboard = MyLoadable({ loader: () => import('../pages/Dashboard') })
 const AsyncAbout = MyLoadable({ loader: () => import('../pages/About') })
 const AsyncCompany = MyLoadable({ loader: () => import('../pages/Companies/Company') })
@@ -26,6 +27,7 @@ const routes = [
   <RestrictedRoute type="private" path="/tasks/edit/:uid" exact component={AsyncTask} />,
   <RestrictedRoute type="private" path="/document" exact component={AsyncDocument} />,
   <RestrictedRoute type="private" path="/collection" exact component={AsyncCollection} />
+  //<RestrictedRoute type="private" path="/signin" exact component={AsyncSignIn} />
 ]
 
 export default routes

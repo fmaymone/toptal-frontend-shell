@@ -1,24 +1,15 @@
 import AuthService from "./auth";
 
-
-export default class TripService extends AuthService {
-    static instance = null;
-
-    constructor(baseUrl) {
-        super(baseUrl);
-        this.promise = this.login("mouse@test.com", "password");
-    }
-
-    static create(baseUrl) {
-        if (TripService.instance === null)
-            TripService.instance = new TripService(baseUrl);
-        return TripService.instance;
+export default class TripService {
+    constructor(authService: AuthService, client) {
+        this._auth = authService;
+        this._client = client;
     }
 
     defaultConfig() {
         return {
             headers: {
-                Authorization: this._authToken,
+                Authorization: this._auth.authToken,
                 Accept: "application/vnd.trips.v1+json",
                 'Content-Type': 'application/json',
             }
@@ -26,12 +17,7 @@ export default class TripService extends AuthService {
     }
 
     async list() {
-        if (this.promise != null) {
-            await this.promise;
-        }
-        if (!this._authenticated) {
-            throw new Exception("Not Authenticated");
-        }
+        this._auth.throwWhenUnauthenticated();
         try {
             let response = await this._client.get("/trips", this.defaultConfig());
             console.log("[listTrips]: " + response.data);
@@ -44,9 +30,7 @@ export default class TripService extends AuthService {
     }
 
     async create(trip) {
-        if (!this._authenticated) {
-            throw new Exception("Not Authenticated");
-        }
+        this._auth.throwWhenUnauthenticated();
         try {
             let response = await this._client.post("/trips", {
                 destination: trip.destination,
@@ -64,9 +48,7 @@ export default class TripService extends AuthService {
     }
 
     async update(trip) {
-        if (!this._authenticated) {
-            throw new Exception("Not Authenticated");
-        }
+        this._auth.throwWhenUnauthenticated();
         try {
             let response = await this._client.patch(`/trips/${trip.id}`, trip, this.defaultConfig());
             console.log("[updateTrip]: ok");
@@ -78,9 +60,7 @@ export default class TripService extends AuthService {
     }
 
     async delete(tripId) {
-        if (!this._authenticated) {
-            throw new Exception("Not Authenticated");
-        }
+        this._auth.throwWhenUnauthenticated();
         try {
             let response = await this._client.delete(`/trips/${tripId}`, this.defaultConfig());
             console.log("[deleteTrip]: ok");
@@ -92,9 +72,7 @@ export default class TripService extends AuthService {
     }
 
     async get(tripId) {
-        if (!this._authenticated) {
-            throw new Exception("Not Authenticated");
-        }
+        this._auth.throwWhenUnauthenticated();
         try {
             let response = await this._client.get(`/trips/${tripId}`, this.defaultConfig());
             console.log("[getTrip]: ok");

@@ -1,12 +1,8 @@
-import axios from "axios";
-
 export default class AuthService {
-    constructor(baseUrl) {
-        this._client = axios.create({baseURL: baseUrl});
+    constructor(client) {
+        this._client = client;
         this._authToken = "";
         this._authenticated = false;
-        this.promise = null;
-        this._baseUrl = baseUrl;
     }
 
     async signUp(name, email, password, passwordConfirmation) {
@@ -32,7 +28,6 @@ export default class AuthService {
                 email: email, 
                 password: password
             });
-            this.promise = null;
             this._authenticated = true;
             this._authToken = response.data.auth_token;
             return this._authToken;
@@ -45,5 +40,16 @@ export default class AuthService {
 
     isAuthenticated() {
         return this._authenticated;
+    }
+
+    throwWhenUnauthenticated() {
+        if (!this._authenticated) {
+            throw new Error("Not authenticated.");
+        }
+    }
+
+    get authToken() {
+        this.throwWhenUnauthenticated();
+        return this._authToken;
     }
 } 

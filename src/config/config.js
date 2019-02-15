@@ -35,6 +35,7 @@ const config = {
   themes,
   grants,
   routes: [],
+  baseURL: "https://toptal-backend-fmaymone.c9users.io",
   onAuthStateChanged: undefined,
   notificationsReengagingHours: 48,
   firebaseLoad: () => import('./firebase'),
