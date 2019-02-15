@@ -6,6 +6,7 @@ import firebaseui from 'firebaseui'
 import withAppConfigs from '../../utils/withAppConfigs'
 import { injectIntl } from 'react-intl'
 import { withFirebase } from 'firekit-provider'
+import SignInScreen from './SigninScreen';
 
 export class SignIn extends Component {
   render() {
@@ -13,7 +14,7 @@ export class SignIn extends Component {
 
     return (
       <Activity title={intl.formatMessage({ id: 'sign_in' })}>
-        
+        <SignInScreen />
       </Activity>
     )
   }
