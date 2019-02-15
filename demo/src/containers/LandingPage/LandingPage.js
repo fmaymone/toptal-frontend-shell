@@ -101,7 +101,7 @@ class LandingPage extends Component {
         <Scrollbar>
           <div className={classes.root}>
             <Helmet>
-              <title>REACT MOST WANTED</title>
+              <title>Toptal Trips</title>
             </Helmet>
             <div className={classes.hero}>
               <div className={classes.content}>
@@ -115,7 +115,7 @@ class LandingPage extends Component {
                     gutterBottom
                     className={classes.title}
                   >
-                    {'REACT MOST WANTED'}
+                    {'Toptal Trips'}
                   </Typography>
                   <Typography variant="h5" component="h2" color="inherit" gutterBottom className={classes.headline}>
                     {'React Starter-Kit with all Most Wanted features.'}
