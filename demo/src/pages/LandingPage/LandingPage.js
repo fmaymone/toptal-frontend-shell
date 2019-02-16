@@ -174,18 +174,6 @@ class LandingPage extends Component {
                 <LockIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip id="tooltip-icon2" title="GitHub repository">
-              <IconButton
-                name="github"
-                aria-label="Open Github"
-                color="inherit"
-                href="https://github.com/TarikHuber/react-most-wanted"
-                target="_blank"
-                rel="noopener"
-              >
-                <GitHubIcon />
-              </IconButton>
-            </Tooltip>
           </Toolbar>
         </AppBar>
 

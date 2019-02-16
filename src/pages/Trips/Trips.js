@@ -13,7 +13,8 @@ import { withRouter } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import { withFirebase } from 'firekit-provider'
 import isGranted from 'rmw-shell/lib/utils/auth'
-import { Activity, Scrollbar } from 'rmw-shell'
+import Activity from '../../containers/Activity/Activity'
+import Scrollbar from '../../components/Scrollbar/Scrollbar'
 import axios from 'axios';
 import * as TripActions from '../../store/actions/tripActions'
 import { bindActionCreators } from 'redux';

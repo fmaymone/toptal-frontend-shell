@@ -1,12 +1,15 @@
 import * as AuthActions from '../store/actions/authActions'
+import { isAuthorised } from '../utils/auth';
 
 export function AuthReducer(state = [], action) {
   switch (action.type) {
     case AuthActions.LOGIN_SUCCESS: {
-      action.history.push("/users");
+      action.history.push("/trips");
       return {
           ...state,
-          loginResponse: action.loginResponse
+          isAuthorised: true,
+          loginResponse: action.loginResponse,
+          user: action.payload
       };
     }
 

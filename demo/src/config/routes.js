@@ -3,6 +3,7 @@ import React from 'react'
 import RestrictedRoute from 'rmw-shell/lib/containers/RestrictedRoute'
 import makeLoadable from 'rmw-shell/lib/containers/MyLoadable'
 
+
 const MyLoadable = (opts, preloadComponents) =>
   makeLoadable({ ...opts, firebase: () => import('./firebase') }, preloadComponents)
 
@@ -15,6 +16,8 @@ const AsyncTask = MyLoadable({ loader: () => import('../pages/Tasks/Task') })
 const AsyncTasks = MyLoadable({ loader: () => import('../pages/Tasks/Tasks') }, [AsyncTask])
 const AsyncDocument = MyLoadable({ loader: () => import('../pages/Document') })
 const AsyncCollection = MyLoadable({ loader: () => import('../pages/Collection') })
+const AsyncTrip = MyLoadable({ loader: () => import('../../../src/pages/Trips/Trip') })
+const AsyncTrips = MyLoadable({ loader: () => import('../../../src/pages/Trips/Trips') }, [AsyncTrip])
 
 const routes = [
   <RestrictedRoute type="private" path="/" exact component={AsyncDashboard} />,
@@ -26,7 +29,10 @@ const routes = [
   <RestrictedRoute type="private" path="/tasks" exact component={AsyncTasks} />,
   <RestrictedRoute type="private" path="/tasks/edit/:uid" exact component={AsyncTask} />,
   <RestrictedRoute type="private" path="/document" exact component={AsyncDocument} />,
-  <RestrictedRoute type="private" path="/collection" exact component={AsyncCollection} />
+  <RestrictedRoute type="private" path="/collection" exact component={AsyncCollection} />,
+  <RestrictedRoute type="private" path="/trips" exact component={AsyncTrips} />,
+  <RestrictedRoute type="private" path="/trips/edit/:uid" exact component={AsyncTrip} />,
+  <RestrictedRoute type="private" path="/trips/create" exact component={AsyncTrip} />,
   //<RestrictedRoute type="private" path="/signin" exact component={AsyncSignIn} />
 ]
 

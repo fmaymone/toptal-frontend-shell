@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
-import { Activity } from 'rmw-shell'
+import  Activity  from '../../containers/Activity/Activity'
 import { withTheme, withStyles } from '@material-ui/core/styles'
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 import TripForm from '../../components/Forms/Trip';
