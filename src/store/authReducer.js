@@ -1,5 +1,5 @@
 import * as AuthActions from '../store/actions/authActions'
-import { isAuthorised } from '../utils/auth';
+//import { isAuthorised } from '../utils/auth';
 
 export function AuthReducer(state = [], action) {
   switch (action.type) {
@@ -8,8 +8,7 @@ export function AuthReducer(state = [], action) {
       return {
           ...state,
           isAuthorised: true,
-          loginResponse: action.loginResponse,
-          user: action.payload
+          loginResponse: action.loginResponse
       };
     }
 

@@ -23,14 +23,22 @@ import { injectIntl, intlShape } from 'react-intl'
 import { withFirebase } from 'firekit-provider'
 import { withRouter } from 'react-router-dom'
 import { withTheme } from '@material-ui/core/styles'
+import * as UserActions from '../../store/actions/userActions'
+import { bindActionCreators } from 'redux';
 
 const path = 'users'
 
 export class Users extends Component {
   componentDidMount() {
-    const { watchList } = this.props
+    // const { watchList } = this.props
+    // watchList(path)
+    this.fetchData();
 
-    watchList(path)
+  }
+ 
+  fetchData = async () => {
+    await this.props.actions.GetUsers();
+    this.setState({isLoading: false})
   }
 
   getProviderIcon = provider => {
@@ -61,14 +69,14 @@ export class Users extends Component {
 
   renderItem = (index, key) => {
     const { list, intl } = this.props
-    const user = list[index].val
+    const user = list[index]
 
     return (
       <div key={key}>
         <ListItem
           key={key}
           onClick={() => {
-            this.handleRowClick(list[index])
+            this.handleRowClick(list[index].id)
           }}
           id={key}
         >
@@ -172,7 +180,14 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+      actions: bindActionCreators(UserActions, dispatch),
+      
+  }
+}
+
 export default connect(
-  mapStateToProps,
-  { ...filterActions }
+  mapStateToProps,mapDispatchToProps
+//  { ...filterActions }
 )(injectIntl(withTheme()(withFirebase(withRouter(Users)))))
