@@ -73,35 +73,9 @@ const getMenuItems = props => {
   return [
     {
       value: '/dashboard',
-      visible: isAuthorised,
+      visible: true,
       primaryText: intl.formatMessage({ id: 'dashboard' }),
       leftIcon: <Icon className="material-icons">dashboard</Icon>
-    },
-    {
-      visible: isAuthorised,
-      primaryText: intl.formatMessage({ id: 'chats' }),
-      primaryTogglesNestedList: true,
-      leftIcon: <Icon className="material-icons">chats</Icon>,
-      nestedItems: [
-        {
-          value: '/chats',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({ id: 'private' }),
-          leftIcon: <Icon className="material-icons">person</Icon>
-        },
-        {
-          value: '/public_chats',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({ id: 'public' }),
-          leftIcon: <Icon className="material-icons">group</Icon>
-        },
-        {
-          value: '/predefined_chat_messages',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({ id: 'predefined_messages' }),
-          leftIcon: <Icon className="material-icons">textsms</Icon>
-        }
-      ]
     },
     {
       value: '/companies',

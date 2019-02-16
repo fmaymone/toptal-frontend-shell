@@ -3,6 +3,7 @@ export default class AuthService {
         this._client = client;
         this._authToken = "";
         this._authenticated = false;
+        this._email = '';
     }
 
     async signUp(name, email, password, passwordConfirmation) {
@@ -30,6 +31,8 @@ export default class AuthService {
             });
             this._authenticated = true;
             this._authToken = response.data.auth_token;
+            this._email = response.data.email;
+            this._role = response.data.role;
             return this._authToken;
         }
         catch(ex) {
