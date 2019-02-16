@@ -1,7 +1,7 @@
 import config from '../config'
 
 export const initState = {
-  auth: { isAuthorised: false },
+  auth: { isAuthorised: true },
   ...config.initial_state
 }
 
