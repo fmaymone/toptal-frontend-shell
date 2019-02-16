@@ -85,8 +85,8 @@ class SignIn extends Component {
 
       //await Auth.signIn(this.state.email, this.state.password);
       //alert("Logged in");
-      const { email, password, history } = this.state;
-      this.props.actions.Login(email, password, history);
+      const { email, password } = this.state;
+      this.props.actions.Login(email, password, this.props.history);
       console.log(this.state);
 
   }
