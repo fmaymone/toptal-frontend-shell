@@ -21,7 +21,7 @@ class App extends Component {
     const { landingPage: LandingPage = false } = configs
 
     return (
-      <A2HSProvider>
+      
         <Provider store={store}>
           <BrowserRouter>
             <Switch>
@@ -34,7 +34,7 @@ class App extends Component {
             </Switch>
           </BrowserRouter>
         </Provider>
-      </A2HSProvider>
+      
     )
   }
 }

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
-import { Activity } from 'rmw-shell'
+import  Activity  from '../../../../src/containers/Activity/Activity'
 import { withTheme, withStyles } from '@material-ui/core/styles'
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
-import TripForm from '../../components/Forms/Trip';
+import TripForm from '../../../../src/components/Forms/Trip';
 import { withRouter } from 'react-router-dom';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
@@ -17,10 +17,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { withFirebase } from 'firekit-provider'
 import { isLoading } from 'firekit'
 import { change, submit } from 'redux-form';
-import isGranted from 'rmw-shell/lib/utils/auth';
+//import isGranted from 'rmw-shell/lib/utils/auth';
 import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios';
-import * as TripActions from '../../store/actions/tripActions'
+import * as TripActions from '../../../../src/store/actions/tripActions'
 import { bindActionCreators } from 'redux';
 
 
@@ -73,7 +73,7 @@ class Trip extends Component {
 //      setDialogIsOpen,
       dialogs,
       match,
-      isGranted,
+      //isGranted,
       isAuthorised,
       uid,
 //      submit,
@@ -83,6 +83,8 @@ class Trip extends Component {
     } = this.props;
 
     const {submit, setDialogIsOpen} = this.props.actions;
+
+    const isGranted = true;
 
     const trip = trips.filter(u => u.id == uid)[0];
 

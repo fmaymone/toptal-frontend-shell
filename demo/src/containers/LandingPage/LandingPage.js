@@ -87,16 +87,7 @@ class LandingPage extends Component {
 
     return (
       <Activity
-        appBarContent={
-          <IconButton
-            color="inherit"
-            href="https://github.com/TarikHuber/react-most-wanted"
-            target="_blank"
-            rel="noopener"
-          >
-            <GitHubIcon />
-          </IconButton>
-        }
+        
       >
         <Scrollbar>
           <div className={classes.root}>

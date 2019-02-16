@@ -21,7 +21,7 @@ import Helmet from 'react-helmet'
 addLocalizationData(locales)
 const history = createHistory()
 
-class Root extends Component {
+class Root extends Component {asdasdasda
   handlePresence = (user, firebaseApp) => {
     let myConnectionsRef = firebaseApp.database().ref(`users/${user.uid}/connections`)
 

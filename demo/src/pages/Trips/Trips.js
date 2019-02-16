@@ -12,10 +12,11 @@ import Button from '@material-ui/core/Button'
 import { withRouter } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import { withFirebase } from 'firekit-provider'
-import isGranted from 'rmw-shell/lib/utils/auth'
-import { Activity, Scrollbar } from 'rmw-shell'
+//import isGranted from 'rmw-shell/lib/utils/auth'
+import  Activity  from '../../../../src/containers/Activity/Activity'
+import  Scrollbar  from '../../../../src/components/Scrollbar/Scrollbar'
 import axios from 'axios';
-import * as TripActions from '../../store/actions/tripActions'
+import * as TripActions from '../../../../src/store/actions/tripActions'
 import { bindActionCreators } from 'redux';
 
 class Trips extends Component {
@@ -65,7 +66,7 @@ class Trips extends Component {
     else{
     return (
       <Activity
-        isLoading={isLoading}
+        //isLoading={isLoading}
         containerStyle={{ overflow: 'hidden' }}
         title={intl.formatMessage({ id: 'trips' })}>
         <Scrollbar>
@@ -95,7 +96,7 @@ class Trips extends Component {
 
 Trips.propTypes = {
   history: PropTypes.object,
-  isGranted: PropTypes.func.isRequired
+  //isGranted: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -105,9 +106,9 @@ const mapStateToProps = (state) => {
     trips,
     isLoading,
     auth,
-    isGranted: grant => isGranted(state, grant),
-    isAuthorised: auth.isAuthorised,
-  }
+    //isGranted: grant => isGranted(state, grant),
+    //isAuthorised: auth.isAuthorised,
+   }
 }
 
 const mapDispatchToProps = (dispatch) => {

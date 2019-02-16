@@ -9,13 +9,12 @@ import { injectIntl, intlShape } from 'react-intl'
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 import { withRouter } from 'react-router-dom'
 import { withTheme } from '@material-ui/core/styles'
-import DateFnsUtils from '@date-io/date-fns'
 import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import { TimePicker } from 'material-ui-pickers'
 import { DateTimePicker } from 'material-ui-pickers'
-import {Test} from './Test'
+
 import axios from 'axios'
-import { load as loadAccount } from './account'
+
 import { initialize } from 'redux-form'
 import { fetchTrip } from '../../store/actions/tripActions';
 
