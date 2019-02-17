@@ -1,74 +1,88 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { withTheme } from "@material-ui/core/styles";
-import { injectIntl } from "react-intl";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
-import Icon from "@material-ui/core/Icon";
-import Button from "@material-ui/core/Button";
-import { withRouter } from "react-router-dom";
-import Avatar from "@material-ui/core/Avatar";
-import { withFirebase } from "firekit-provider";
-import isGranted from "rmw-shell/lib/utils/auth";
-import Activity from "../../containers/Activity/Activity";
-import Scrollbar from "../../components/Scrollbar/Scrollbar";
-import axios from "axios";
-import * as TripActions from "../../store/actions/tripActions";
-import { bindActionCreators } from "redux";
+/* eslint-disable linebreak-style */
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+import { withTheme } from '@material-ui/core/styles'
+import { injectIntl } from 'react-intl'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Divider from '@material-ui/core/Divider'
+import Icon from '@material-ui/core/Icon'
+import Button from '@material-ui/core/Button'
+import { withRouter } from 'react-router-dom'
+import { withFirebase } from 'firekit-provider'
+import isGranted from 'rmw-shell/lib/utils/auth'
+import Activity from '../../containers/Activity/Activity'
+import Scrollbar from '../../components/Scrollbar/Scrollbar'
+import * as TripActions from '../../store/actions/tripActions'
+import { bindActionCreators } from 'redux'
+import TripSearch from './TripSearch'
 
 class Trips extends Component {
-  state = {
-    isLoading: true,
-    trips: []
-  };
-
-  componentDidMount() {
-    this.fetchData();
+  constructor() {
+    super()
+    this.state = {
+      filteredTrips: []
+    }
   }
 
-  componentWillMount() {
-    this.fetchData();
+  componentDidMount() {
+    this.fetchData()
+  }
+
+  componentWillMount(){
+    this.fetchData()
   }
 
   fetchData = async () => {
-    await this.props.actions.GetTrips();
-    this.setState({ isLoading: false });
+    await this.props.actions.GetTrips()
+    this.setState({ isLoading: false , filteredTrips: this.props.trips})
   };
 
   getDayCountsToStart(trip) {
-    const dt1 = new Date(trip.start_date);
-    const dt2 = new Date();
-    const dt3 = new Date(trip.end_date);
+    const start_date = new Date(trip.start_date)
+    const now = new Date()
+    const end_date = new Date(trip.end_date)
     const diff = Math.floor(
-      (Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) -
-        Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) /
+      (Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) -
+        Date.UTC(start_date.getFullYear(), start_date.getMonth(), start_date.getDate())) /
         (1000 * 60 * 60 * 24)
-    );
+    )
     if (diff < 0) {
-
-      return `Trip starts in ${Math.abs(diff)} days` 
+      return `Trip starts in ${Math.abs(diff)} days`
     } else {
-      return `Trip finished in ${dt3.toLocaleDateString()}` 
+      return `Trip finished in ${end_date.toLocaleDateString()}`
     }
   }
 
-  renderList(trips) {
-    const { history, auth } = this.props;
+  filterTrips = (tripFilter) => {
+    let filteredTrips = this.state.filteredTrips
+    filteredTrips = filteredTrips.filter((trip) => {
+      let tripDestination = trip.destination.toLowerCase() 
+      return tripDestination.indexOf(
+        tripFilter.toLowerCase()) !== -1
+    })
+    this.setState({
+      filteredTrips
+    })
+  }
 
+  renderList(trips) {
+    const { history, auth } = this.props
+    console.log(this.state.filteredTrips)
+    
     if (trips === undefined) {
-      return <div />;
+      return <div />
     }
 
-    return trips.map((trip, index) => {
+    return this.state.filteredTrips.map((trip, index) => {
       return (
         <div key={index}>
           <ListItem
             key={index}
             onClick={() => {
-              history.push(`/trips/edit/${trip.id}`);
+              history.push(`/trips/edit/${trip.id}`)
             }}
             id={index}
           >
@@ -79,36 +93,37 @@ class Trips extends Component {
           </ListItem>
           <Divider inset />
         </div>
-      );
-    });
+      )
+    })
   }
 
   render() {
-    const { intl, theme, history, isAuthorised, trips } = this.props;
+    const { intl, theme, history, isAuthorised, trips } = this.props
 
-    const { isLoading } = this.state;
+    const { isLoading } = this.state
 
     if (isLoading) {
-      return <div />;
+      return <div />
     } else {
       return (
         <Activity
           isLoading={isLoading}
-          containerStyle={{ overflow: "hidden" }}
-          title={intl.formatMessage({ id: "trips" })}
+          containerStyle={{ overflow: 'hidden' }}
+          title={intl.formatMessage({ id: 'trips' })}
+          appBarContent={<TripSearch handleSearch = {this.filterTrips}/>}
         >
           <Scrollbar>
             <div
               style={{
-                overflow: "none",
+                overflow: 'none',
                 backgroundColor: theme.palette.convasColor
               }}
             >
               <List
                 id="test"
-                style={{ height: "100%" }}
+                style={{ height: '100%' }}
                 ref={field => {
-                  this.list = field;
+                  this.list = field
                 }}
               >
                 {this.renderList(trips)}
@@ -116,14 +131,14 @@ class Trips extends Component {
             </div>
 
             <div
-              style={{ position: "fixed", right: 18, zIndex: 3, bottom: 18 }}
+              style={{ position: 'fixed', right: 18, zIndex: 3, bottom: 18 }}
             >
               {isAuthorised && (
                 <Button
                   variant="fab"
                   color="secondary"
                   onClick={() => {
-                    history.push(`/trips/create`);
+                    history.push('/trips/create')
                   }}
                 >
                   <Icon className="material-icons">add</Icon>
@@ -132,7 +147,7 @@ class Trips extends Component {
             </div>
           </Scrollbar>
         </Activity>
-      );
+      )
     }
   }
 }
@@ -140,10 +155,10 @@ class Trips extends Component {
 Trips.propTypes = {
   history: PropTypes.object,
   isGranted: PropTypes.func.isRequired
-};
+}
 
 const mapStateToProps = state => {
-  const { auth, trips, isLoading } = state;
+  const { auth, trips, isLoading } = state
 
   return {
     trips,
@@ -151,16 +166,16 @@ const mapStateToProps = state => {
     auth,
     isGranted: grant => isGranted(state, grant),
     isAuthorised: auth.isAuthorised
-  };
+  }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(TripActions, dispatch)
-  };
+  }
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(injectIntl(withTheme()(withRouter(withFirebase(Trips)))));
+)(injectIntl(withTheme()(withRouter(withFirebase(Trips)))))
