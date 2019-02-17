@@ -1,11 +1,11 @@
 /* eslint-disable linebreak-style */
 import React, { Component } from 'react'
 import InputBase from '@material-ui/core/InputBase';
-import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 
 class SearchAppBar extends Component {
   render() {
+    
     return (
       <div style={{ display: 'flex' }}>
         <div>
@@ -22,4 +22,4 @@ class SearchAppBar extends Component {
   }
 }
 
-export default withStyles(styles)(SearchAppBar)
+export default (SearchAppBar)

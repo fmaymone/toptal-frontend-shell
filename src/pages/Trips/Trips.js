@@ -66,6 +66,7 @@ class Trips extends Component {
     this.setState({
       filteredTrips
     })
+
   }
 
   renderList(trips) {
@@ -110,7 +111,7 @@ class Trips extends Component {
           isLoading={isLoading}
           containerStyle={{ overflow: 'hidden' }}
           title={intl.formatMessage({ id: 'trips' })}
-          appBarContent={<TripSearch handleSearch = {this.filterTrips}/>}
+          appBarContent={<TripSearch handleSearch = {this.filterTrips} />}
         >
           <Scrollbar>
             <div
