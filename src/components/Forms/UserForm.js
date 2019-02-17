@@ -83,7 +83,7 @@ class UserForm extends Component {
   render() {
     const { intl, handleRuleChange, isAdmin, classes, appConfig, values } = this.props
 
-    const role = values.role == null ? "regular" : values.role; 
+    const role = (values.role == null) ? "regular" : values.role; 
 
     return (
       <form onSubmit={this.handleSubmit} style={{
