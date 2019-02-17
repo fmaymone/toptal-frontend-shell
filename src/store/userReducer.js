@@ -48,6 +48,23 @@ export function UserListReducer(state = [], action) {
         updating: false
       };
     }
+
+    case UserActions.UPDATE_ROLE: {
+      return {
+        ...state,
+        editing: false,
+        updating: true
+      };
+    }
+
+    case UserActions.UPDATE_ROLE_SUCCESS: {
+      return {
+        ...state,
+        userId: action.userId,
+        newRole: action.newRole,
+        updating: false
+      }
+    }
     // The following Cases handle the data by mapping it. Mostly because they are related with the modification of a single Data
 
     //Update
