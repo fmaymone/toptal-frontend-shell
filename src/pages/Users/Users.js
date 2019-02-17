@@ -29,6 +29,12 @@ import { bindActionCreators } from 'redux';
 const path = 'users'
 
 export class Users extends Component {
+
+  state = {
+    loadingUsers: true,
+    users: []
+  }
+
   componentDidMount() {
     // const { watchList } = this.props
     // watchList(path)
@@ -37,8 +43,7 @@ export class Users extends Component {
   }
  
   fetchData = async () => {
-    await this.props.actions.GetUsers();
-    this.setState({isLoading: false})
+    this.props.actions.GetUsers();
   }
 
   getProviderIcon = provider => {
@@ -64,48 +69,42 @@ export class Users extends Component {
 
   handleRowClick = user => {
     const { history, isSelecting } = this.props
-    history.push(isSelecting ? `/${isSelecting}/${user.key}` : `/${path}/edit/${user.key}/profile`)
+    this.props.actions.GetUser(user, history);
   }
 
-  renderItem = (index, key) => {
-    const { list, intl } = this.props
-    const user = list[index]
+  renderList(users) {
+    if (users === undefined) {
+      return <div />
+    }
 
-    return (
-      <div key={key}>
+    return users.map((user, index) => {
+      return <div key={index}>
         <ListItem
-          key={key}
+          key={index}
           onClick={() => {
-            this.handleRowClick(list[index].id)
+            this.handleRowClick(user.id)
           }}
-          id={key}
+          id={index}
         >
-          <AltIconAvatar src={user.photoURL} iconName={'person'} />
+          <AltIconAvatar src={null} iconName={'person'} />
 
           <ListItemText
-            primary={user.displayName}
-            secondary={
-              !user.connections && !user.lastOnline
-                ? intl.formatMessage({ id: 'offline' })
-                : intl.formatMessage({ id: 'online' })
-            }
+            primary={user.name}
+            secondary={user.email}
           />
 
           <Toolbar>
-            {user.providerData &&
-              user.providerData.map((p, i) => {
-                return <div key={i}>{this.getProviderIcon(p)}</div>
-              })}
+            <div key={index}><Email color='primary' /></div>
           </Toolbar>
           <OfflinePin color={user.connections ? 'primary' : 'disabled'} />
         </ListItem>
         <Divider inset={true} />
       </div>
-    )
+    })
   }
 
   render() {
-    const { list, theme, intl, setFilterIsOpen, hasFilters, isLoading } = this.props
+    const { users, theme, intl, setFilterIsOpen, loadingUsers } = this.props
 
     const filterFields = [
       {
@@ -135,17 +134,17 @@ export class Users extends Component {
             >
               <FilterList
                 className="material-icons"
-                color={hasFilters ? theme.palette.accent1Color : theme.palette.canvasColor}
+                color={theme.palette.canvasColor}
               />
             </IconButton>
           </div>
         }
-        isLoading={isLoading}
+        isLoading={loadingUsers}
       >
         <div style={{ height: '100%', overflow: 'none' }}>
           <Scrollbar>
             <List id="test" ref={field => (this.list = field)}>
-              <ReactList itemRenderer={this.renderItem} length={list ? list.length : 0} type="simple" />
+              {this.renderList(users)}
             </List>
           </Scrollbar>
         </div>
@@ -163,19 +162,15 @@ Users.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { auth, filters } = state
+  const { auth, users, loadingUsers } = state
   const { match } = ownProps
 
   const isSelecting = match.params.select ? match.params.select : false
 
-  const { hasFilters } = filterSelectors.selectFilterProps('users', filters)
-  const list = filterSelectors.getFilteredList('users', filters, getList(state, path), fieldValue => fieldValue.val)
-
   return {
     isSelecting,
-    hasFilters,
-    isLoading: isLoading(state, path),
-    list,
+    loadingUsers,
+    users,
     auth
   }
 }
@@ -183,7 +178,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
       actions: bindActionCreators(UserActions, dispatch),
-      
   }
 }
 

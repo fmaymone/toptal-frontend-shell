@@ -49,18 +49,19 @@ export function CreateUserSuccess(user){
     }
 }
 
-export function GetUser(id){
+export function GetUser(id, history){
     return (dispatch, getState) => {
         return userService.get(id).then(res => {
-            dispatch(GetUserSuccess(res))
+            dispatch(GetUserSuccess(res, history))
         })
     }
 }
 
-export function GetUserSuccess(user){
+export function GetUserSuccess(user, history){
     return {
         type:GET_USER_SUCCESS,
-        user
+        user,
+        history
     }
 }
 

@@ -16,16 +16,13 @@ export function UserListReducer(state = [], action) {
 
     //Read
     case UserActions.GET_USERS_SUCCESS: {
-      return action.users;
+      return action.users
     }
 
-    case UserActions.GET_USER: {
-      return {
-        ...state,
-        loadingUsers: action.loadingUsers
-      };
+    case UserActions.GET_USER_SUCCESS: {
+      action.history.push(`/users/edit/${action.user.id}/profile`)
+      return action.user;
     }
-
     // The following Cases handle the data by mapping it. Mostly because they are related with the modification of a single Data
 
     //Update

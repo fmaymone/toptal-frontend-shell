@@ -1,9 +1,9 @@
-export default class Role {
+class Role {
   static ROLE_ADMIN = "admin";
   static ROLE_REGULAR = "regular";
 }
 
-class User {
+export default class User {
   constructor(id = -1, name = "", email = "", role = "") {
     this._id = id;
     this._name = name;
