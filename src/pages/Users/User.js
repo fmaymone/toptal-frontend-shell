@@ -70,7 +70,7 @@ export class User extends Component {
 
 
   handleRoleChange = event => {
-    let user = this.props.users;
+    let user = this.props.users.user;
     user.role = event.target.value
     this.props.UpdateUser(user);
   };
@@ -90,8 +90,11 @@ export class User extends Component {
       users
     } = this.props
 
+    
     const uid = match.params.uid
-    const isAdmin = users.role === 'admin';
+    let isAdmin = false;
+    if (!users.updating)
+     isAdmin = users.user.role === 'admin';
 
     return (
       <Activity
@@ -128,13 +131,13 @@ export class User extends Component {
                 <Tab value="grants" icon={<Lock className="material-icons" />} />
               </Tabs>
             </AppBar>
-
-            {editType === 'profile' && (
+             
+            {!users.updating && editType === 'profile' && (
               <div className={classes.form}>
                 <UserForm
                   handleRoleChange={this.handleRoleChange}
                   isAdmin={isAdmin}
-                  values={users ? users : {}}
+                  values={users.user ? users.user : {}}
                   {...this.props}
                 />
               </div>

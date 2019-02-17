@@ -30,7 +30,23 @@ export function UserListReducer(state = [], action) {
 
     case UserActions.GET_USER_SUCCESS: {
       action.history.push(`/users/edit/${action.user.id}/profile`)
-      return action.user;
+      return {
+        user: action.user
+      }
+    }
+
+    case UserActions.UPDATE_USER: {
+      return {
+        editing: false,
+        updating: true
+      };
+    }
+
+    case UserActions.UPDATE_USER_SUCCESS: {
+      return {
+        user: action.user,
+        updating: false
+      };
     }
     // The following Cases handle the data by mapping it. Mostly because they are related with the modification of a single Data
 
@@ -85,22 +101,6 @@ const user = (state, action) => {
       return {
         ...state,
         editing: false
-      };
-    }
-
-    case UserActions.UPDATE_USER: {
-      return {
-        ...state,
-        editing: false,
-        updating: true
-      };
-    }
-
-    case UserActions.UPDATE_USER_SUCCESS: {
-      return {
-        ...state,
-        user: action.user,
-        updating: false
       };
     }
 
