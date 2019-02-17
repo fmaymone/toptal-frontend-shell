@@ -24,7 +24,8 @@
     "expect": "^24.1.0",
     "firekit-provider": "^1.0.1",
     "history": "^4.7.2",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "react-datepicker": "^2.1.0"
   },
   "peerDependencies": {
     "@date-io/moment": "0.x",

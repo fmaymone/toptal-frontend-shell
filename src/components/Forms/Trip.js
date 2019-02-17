@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import AvatarImageField from 'rmw-shell/lib/components/ReduxFormFields/AvatarImageField'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -70,11 +71,13 @@ class Form extends Component {
             
             <Field
               name='start_date'
+              value = 'start_date'
               disabled={!initialized}
               placeholder={intl.formatMessage({ id: 'start_date_hint' })}
               label={intl.formatMessage({ id: 'start_date_label' })}
               ref='start_date'
               withRef
+              type="date"
               component={TextField} 
 
             />
@@ -89,6 +92,7 @@ class Form extends Component {
               label={intl.formatMessage({ id: 'end_date_label' })}
               ref='end_date'
               withRef
+              type="date"
             />
           </div>
 
@@ -125,15 +129,23 @@ Form = reduxForm({ form: 'trip', enableReinitialize : true })(Form)
 const selector = formValueSelector('trip')
 
 const mapStateToProps = (state, ownProps) => {
-  const { intl, vehicleTypes, users, dialogs, trip } = state
+  const { intl, vehicleTypes, users, dialogs } = state
+
+  let propsFormated = ownProps.initValues
+  propsFormated.start_date = new Date(ownProps.initValues.start_date).toISOString().split('T')[0];
+  propsFormated.end_date = new Date(ownProps.initValues.end_date).toISOString().split('T')[0];
+  //propsFormated.start_date = '2018-02-02'
+  //propsFormated.end_date = '2018-02-02'
+  
+  
 
   return {
     intl,
     vehicleTypes,
     users,
     dialogs,
-    initialValues: ownProps.initValues
-
+    initialValues: propsFormated
+    
   }
 }
 
