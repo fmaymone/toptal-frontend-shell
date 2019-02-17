@@ -16,7 +16,16 @@ export function UserListReducer(state = [], action) {
 
     //Read
     case UserActions.GET_USERS_SUCCESS: {
-      return action.users
+      return {
+        users: action.users,
+        loadingUsers: false
+      }
+    }
+
+    case UserActions.GET_USER: {
+      return {
+        loadingUsers: true
+      }
     }
 
     case UserActions.GET_USER_SUCCESS: {

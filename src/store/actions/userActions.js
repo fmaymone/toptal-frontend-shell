@@ -51,8 +51,11 @@ export function CreateUserSuccess(user){
 
 export function GetUser(id, history){
     return (dispatch, getState) => {
-        return userService.get(id).then(res => {
+        userService.get(id).then(res => {
             dispatch(GetUserSuccess(res, history))
+        })
+        dispatch({
+            type: GET_USERS
         })
     }
 }

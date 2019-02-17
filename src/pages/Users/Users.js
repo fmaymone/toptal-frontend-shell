@@ -31,8 +31,7 @@ const path = 'users'
 export class Users extends Component {
 
   state = {
-    loadingUsers: true,
-    users: []
+    users: null
   }
 
   componentDidMount() {
@@ -44,27 +43,6 @@ export class Users extends Component {
  
   fetchData = async () => {
     this.props.actions.GetUsers();
-  }
-
-  getProviderIcon = provider => {
-    const color = 'primary'
-
-    switch (provider.providerId) {
-    case 'google.com':
-      return <GoogleIcon color={color} />
-    case 'facebook.com':
-      return <FacebookIcon color={color} />
-    case 'twitter.com':
-      return <TwitterIcon color={color} />
-    case 'github.com':
-      return <GitHubIcon color={color} />
-    case 'phone':
-      return <Phone color={color} />
-    case 'password':
-      return <Email color={color} />
-    default:
-      return undefined
-    }
   }
 
   handleRowClick = user => {
@@ -104,7 +82,7 @@ export class Users extends Component {
   }
 
   render() {
-    const { users, theme, intl, setFilterIsOpen, loadingUsers } = this.props
+    const { users, theme, intl, setFilterIsOpen } = this.props
 
     const filterFields = [
       {
@@ -117,6 +95,8 @@ export class Users extends Component {
         label: intl.formatMessage({ id: 'creation_time' })
       }
     ]
+
+    const loadingUsers = users.loadingUsers
 
     return (
       <Activity
@@ -144,7 +124,7 @@ export class Users extends Component {
         <div style={{ height: '100%', overflow: 'none' }}>
           <Scrollbar>
             <List id="test" ref={field => (this.list = field)}>
-              {this.renderList(users)}
+              {this.renderList(users.users)}
             </List>
           </Scrollbar>
         </div>
