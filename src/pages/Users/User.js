@@ -50,7 +50,8 @@ const styles = theme => ({
 export class User extends Component {
   state = {
     values: {},
-    users: null
+    users: null,
+    role: 'regular'
   }
 
   componentDidMount() {
@@ -67,22 +68,12 @@ export class User extends Component {
     }
   }
 
-  handleAdminChange = (e, isInputChecked) => {
-    const { firebaseApp, match } = this.props
-    const uid = match.params.uid
 
-    if (isInputChecked) {
-      firebaseApp
-        .database()
-        .ref(`/admins/${uid}`)
-        .set(true)
-    } else {
-      firebaseApp
-        .database()
-        .ref(`/admins/${uid}`)
-        .remove()
-    }
-  }
+  handleRoleChange = event => {
+    let user = this.props.users;
+    user.role = event.target.value
+    this.props.UpdateUser(user);
+  };
 
   render() {
     const {
@@ -141,7 +132,7 @@ export class User extends Component {
             {editType === 'profile' && (
               <div className={classes.form}>
                 <UserForm
-                  handleAdminChange={this.handleAdminChange}
+                  handleRoleChange={this.handleRoleChange}
                   isAdmin={isAdmin}
                   values={users ? users : {}}
                   {...this.props}
@@ -208,7 +199,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
       actions: bindActionCreators({ setSimpleValue, change, submit, ...filterActions }, dispatch),
-      GetUser: (uid) => dispatch(UserActions.GetUser(uid))
+      GetUser: (uid) => dispatch(UserActions.GetUser(uid)),
+      UpdateUser: (user) => dispatch(UserActions.UpdateUser(user))
   }
 }
 

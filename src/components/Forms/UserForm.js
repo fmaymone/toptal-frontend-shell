@@ -81,7 +81,7 @@ class UserForm extends Component {
   }
 
   render() {
-    const { intl, handleAdminChange, isAdmin, classes, appConfig, values } = this.props
+    const { intl, handleRuleChange, isAdmin, classes, appConfig, values } = this.props
 
     const role = values.role == null ? "regular" : values.role; 
 
@@ -120,7 +120,7 @@ class UserForm extends Component {
             name="role1"
             className={classNames.group}
             value={role}
-            //onChange={this.handleChange}
+            onChange={this.props.handleRoleChange}
             row
           >
             <FormControlLabel value="admin" control={<Radio />} label="Administrator" labelPlacement="bottom"/>
@@ -136,12 +136,12 @@ class UserForm extends Component {
 }
 
 UserForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  handleAdminChange: PropTypes.func.isRequired,
-  isAdmin: PropTypes.bool.isRequired,
-  intl: intlShape.isRequired,
-  initialized: PropTypes.bool.isRequired,
-  uid: PropTypes.string.isRequired
+  // handleSubmit: PropTypes.func.isRequired,
+  // handleAdminChange: PropTypes.func.isRequired,
+  // isAdmin: PropTypes.bool.isRequired,
+  // intl: intlShape.isRequired,
+  // initialized: PropTypes.bool.isRequired,
+  // uid: PropTypes.string.isRequired
 }
 
 export default withAppConfigs(withStyles(styles, { withTheme: true })(UserForm))
