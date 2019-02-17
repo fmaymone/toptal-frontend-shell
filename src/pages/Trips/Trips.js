@@ -23,7 +23,7 @@ class Trips extends Component {
   constructor() {
     super()
     this.state = {
-      filteredTrips: []
+      tripFilter: ""
     }
   }
 
@@ -31,13 +31,9 @@ class Trips extends Component {
     this.fetchData()
   }
 
-  componentWillMount(){
-    this.fetchData()
-  }
-
-  fetchData = async () => {
-    await this.props.actions.GetTrips()
-    this.setState({ isLoading: false , filteredTrips: this.props.trips})
+  fetchData() {
+    this.props.actions.GetTrips()
+    this.setState({ isLoading: false })
   };
 
   getDayCountsToStart(trip) {
@@ -57,14 +53,8 @@ class Trips extends Component {
   }
 
   filterTrips = (tripFilter) => {
-    let filteredTrips = this.state.filteredTrips
-    filteredTrips = filteredTrips.filter((trip) => {
-      let tripDestination = trip.destination.toLowerCase() 
-      return tripDestination.indexOf(
-        tripFilter.toLowerCase()) !== -1
-    })
     this.setState({
-      filteredTrips
+      tripFilter
     })
 
   }
@@ -72,12 +62,18 @@ class Trips extends Component {
   renderList(trips) {
     const { history, auth } = this.props
     console.log(this.state.filteredTrips)
+
+    const tripFilter = this.state.tripFilter;
     
     if (trips === undefined) {
       return <div />
     }
 
-    return this.state.filteredTrips.map((trip, index) => {
+    return trips.filter((trip) => {
+      let tripDestination = trip.destination.toLowerCase() 
+      return tripDestination.indexOf(
+        tripFilter.toLowerCase()) !== -1
+    }).map((trip, index) => {
       return (
         <div key={index}>
           <ListItem

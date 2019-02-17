@@ -85,13 +85,7 @@ class Trip extends Component {
 
     const {submit, setDialogIsOpen} = this.props.actions;
 
-    const testTrip = trips.filter(u => u.id == uid)[0];
-    const trip = match.params.uid ? testTrip : {
-      destination: "", 
-      start_date: "01-01-2019", 
-      end_date: "01-01-2019", 
-      comment: ""
-    }
+    const trip = trips.filter(u => u.id == uid)[0];
 
     return (
       <Activity
