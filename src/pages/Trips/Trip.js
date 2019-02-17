@@ -56,10 +56,11 @@ class Trip extends Component {
   }
 
   handleSave = (values) => {
+    const { history } = this.props
     if(values.id){
       this.props.UpdateTrip(values);
     }else{
-      this.props.CreateTrip(values);
+      this.props.CreateTrip(values, history);
     }
     
   }
@@ -84,7 +85,13 @@ class Trip extends Component {
 
     const {submit, setDialogIsOpen} = this.props.actions;
 
-    const trip = trips.filter(u => u.id == uid)[0];
+    const testTrip = trips.filter(u => u.id == uid)[0];
+    const trip = match.params.uid ? testTrip : {
+      destination: "", 
+      start_date: "01-01-2019", 
+      end_date: "01-01-2019", 
+      comment: ""
+    }
 
     return (
       <Activity
@@ -120,12 +127,6 @@ class Trip extends Component {
         <div style={{ margin: 15, display: 'flex' }}>
           <TripForm  
             onSubmit={this.handleSave}
-            onSubmitSuccess={values => {
-              history.push("/trips");
-            }}
-            onDelete={values => {
-              history.push("/trips");
-            }}
             initValues = {trip}
           />
         </div>
@@ -192,7 +193,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
       actions: bindActionCreators( {setDialogIsOpen, change, submit}, dispatch ),
       UpdateTrip: trip => dispatch(TripActions.UpdateTrip(trip)),
-      CreateTrip: trip => dispatch(TripActions.CreateTrip(trip)),
+      CreateTrip: (trip, history) => dispatch(TripActions.CreateTrip(trip, history)),
       DeleteTrip: (id, history) => dispatch(TripActions.DeleteTrip(id, history))
   }
 }
