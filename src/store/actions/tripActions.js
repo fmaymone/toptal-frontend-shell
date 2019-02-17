@@ -35,18 +35,20 @@ export const DELETE_TRIP = '[Trip] DELETE_TRIP'
 export const DELETE_TRIP_SUCCESS = '[Trip] DELETE_TRIP_SUCCESS' 
 export const DELETE_TRIP_ERROR = '[Trip] DELETE_TRIP_ERROR' 
 
-export function CreateTrip(trip){
+export function CreateTrip(trip, history){
     return (dispatch, getState) => {
         return tripService.create(trip).then(res => {
-            dispatch(CreateTripSuccess(res))
+            dispatch(CreateTripSuccess(res, history))
+            history.push("/trips")
         })
     }
 }
 
-export function CreateTripSuccess(trip){
+export function CreateTripSuccess(trip, history){
     return {
         type:CREATE_TRIP_SUCCESS,
-        trip
+        trip,
+        history
     }
 }
 
