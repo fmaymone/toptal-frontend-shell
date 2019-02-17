@@ -72,7 +72,7 @@ export class User extends Component {
   handleRoleChange = event => {
     let user = this.props.users.user;
     user.role = event.target.value
-    this.props.UpdateUser(user);
+    this.props.UpdateRole(user.id, user.role);
   };
 
   render() {
@@ -203,7 +203,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
       actions: bindActionCreators({ setSimpleValue, change, submit, ...filterActions }, dispatch),
       GetUser: (uid) => dispatch(UserActions.GetUser(uid)),
-      UpdateUser: (user) => dispatch(UserActions.UpdateUser(user))
+      UpdateUser: (user) => dispatch(UserActions.UpdateUser(user)),
+      UpdateRole: (uid, role) => dispatch(UserActions.UpdateRole(uid, role))
   }
 }
 
