@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
+import PrintIcon from '@material-ui/icons/Print'
 
 class SearchAppBar extends Component {
   render() {
@@ -17,6 +18,9 @@ class SearchAppBar extends Component {
             this.props.handleSearch(e.target.value)
           }}
         />
+        <PrintIcon onClick={e => {
+          this.props.handlePrint()
+        }}/>
       </div>
     )
   }

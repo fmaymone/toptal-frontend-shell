@@ -94,6 +94,26 @@ class Trips extends Component {
     })
   }
 
+  print = () => {
+    //document.print()
+    const {trips} = this.props
+    const now = new Date()
+    let month = now.getMonth();
+    let year = now.getFullYear();
+    month = month == 11 ? 0 : month + 1
+    year = month == 1 ? year + 1 : year
+    const nextMonth = new Date(year, month, 1)
+    month = month == 11 ? 0 : month + 1
+    year = month == 1 ? year + 1 : year
+    const until = new Date(year, month, 1)
+    trips.filter(t => {
+      const d = new Date(t.start_date)
+      return d >= nextMonth && d < until;
+    }).forEach(t => {
+      console.log(JSON.stringify(t))
+    });
+  }
+
   render() {
     const { intl, theme, history, isAuthorised, trips } = this.props
 
@@ -107,7 +127,7 @@ class Trips extends Component {
           isLoading={isLoading}
           containerStyle={{ overflow: 'hidden' }}
           title={intl.formatMessage({ id: 'trips' })}
-          appBarContent={<TripSearch handleSearch = {this.filterTrips} />}
+          appBarContent={<TripSearch handleSearch = {this.filterTrips} handlePrint = {this.print}/>}
         >
           <Scrollbar>
             <div
