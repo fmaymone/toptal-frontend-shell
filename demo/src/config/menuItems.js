@@ -28,9 +28,16 @@ const getMenuItems = (props) => {
     handleSignOut
   } = props
 
-  //TODO needs to come from our API
+
   const isAuthorised = auth.isAuthorised
-  //const isAuthorised = true
+  let isManager = false
+  let isAdmin = false
+
+   if(auth.loginResponse !== undefined){
+     const role = auth.loginResponse.role
+     isAdmin = (role === 'admin')
+     isManager = (role === 'manager')
+   }
   
 
   const themeItems = allThemes.map((t) => {
@@ -78,85 +85,23 @@ const getMenuItems = (props) => {
       primaryText: intl.formatMessage({ id: 'trips' }),
       leftIcon: <Icon className='material-icons' >Trips</Icon>
     },
-    // {
-    //   visible: isAuthorised,
-    //   primaryText: intl.formatMessage({ id: 'chats' }),
-    //   primaryTogglesNestedList: true,
-    //   leftIcon: <Icon className='material-icons' >chats</Icon>,
-    //   nestedItems: [
-    //     {
-    //       value: '/chats',
-    //       visible: isAuthorised,
-    //       primaryText: intl.formatMessage({ id: 'private' }),
-    //       leftIcon: <Icon className='material-icons' >person</Icon>
-    //     },
-    //     {
-    //       value: '/public_chats',
-    //       visible: isAuthorised,
-    //       primaryText: intl.formatMessage({ id: 'public' }),
-    //       leftIcon: <Icon className='material-icons' >group</Icon>
-    //     },
-    //     {
-    //       value: '/predefined_chat_messages',
-    //       visible: isAuthorised,
-    //       primaryText: intl.formatMessage({ id: 'predefined_messages' }),
-    //       leftIcon: <Icon className='material-icons' >textsms</Icon>
-    //     }
-    //   ]
-    // },
-    // {
-    //   value: '/companies',
-    //   visible: isGranted('read_companies'),
-    //   primaryText: intl.formatMessage({ id: 'companies' }),
-    //   leftIcon: <Icon className='material-icons' >business</Icon>
-    // },
-    // {
-    //   value: '/tasks',
-    //   visible: isAuthorised,
-    //   primaryText: intl.formatMessage({ id: 'tasks' }),
-    //   leftIcon: <Icon className='material-icons' >list</Icon>
-    // },
-    // {
-    //   visible: isAuthorised,
-    //   primaryTogglesNestedList: true,
-    //   primaryText: intl.formatMessage({ id: 'firestore' }),
-    //   leftIcon: <Icon className='material-icons' >flash_on</Icon>,
-    //   nestedItems: [
-    //     {
-    //       value: '/document',
-    //       primaryText: intl.formatMessage({ id: 'document' }),
-    //       leftIcon: <Icon className='material-icons' >flash_on</Icon>
-    //     },
-    //     {
-    //       value: '/collection',
-    //       primaryText: intl.formatMessage({ id: 'collection' }),
-    //       leftIcon: <Icon className='material-icons' >flash_on</Icon>
-    //     }
-    //   ]
-    // },
-    // {
-    //   value: '/about',
-    //   visible: isAuthorised,
-    //   primaryText: intl.formatMessage({ id: 'about' }),
-    //   leftIcon: <Icon className='material-icons' >info_outline</Icon>
-    // },
     {
-      visible: isAuthorised, // In prod: isGranted('administration'),
+      value: '/trips/all_trips',
+      visible: isAdmin,
+      primaryText: intl.formatMessage({ id: 'all_trips' }),
+      leftIcon: <Icon className='material-icons' >All Trips</Icon>
+    },
+      {
+      visible: isAdmin, // In prod: isGranted('administration'),
       primaryTogglesNestedList: true,
       primaryText: intl.formatMessage({ id: 'administration' }),
       leftIcon: <Icon className='material-icons' >security</Icon>,
       nestedItems: [
         {
           value: '/users',
-          visible: isAuthorised, // In prod: isGranted('read_users'),
+          visible: (isAdmin || isManager) , // In prod: isGranted('read_users'),
           primaryText: intl.formatMessage({ id: 'users' }),
           leftIcon: <Icon className='material-icons' >group</Icon>
-        },
-        {
-          value: '/roles',
-          visible: isGranted('read_roles'),
-          primaryText: intl.formatMessage({ id: 'roles' }),
-          leftIcon: <Icon className='material-icons' >account_box</Icon>
         }
       ]
     },

@@ -17,7 +17,8 @@ const AsyncTasks = MyLoadable({ loader: () => import('../pages/Tasks/Tasks') }, 
 const AsyncDocument = MyLoadable({ loader: () => import('../pages/Document') })
 const AsyncCollection = MyLoadable({ loader: () => import('../pages/Collection') })
 const AsyncTrip = MyLoadable({ loader: () => import('../../../src/pages/Trips/Trip') })
-const AsyncTrips = MyLoadable({ loader: () => import('../../../src/pages/Trips/Trips') }, [AsyncTrip])
+const AsyncTrips = MyLoadable({ loader: () => import('../../../src/pages/Trips/UserTrips') }, [AsyncTrip])
+const AsyncAllTrips = MyLoadable({ loader: () => import('../../../src/pages/Trips/AllTrips') }, [AsyncTrip])
 
 const routes = [
   <RestrictedRoute type="private" path="/" exact component={AsyncDashboard} />,
@@ -33,6 +34,7 @@ const routes = [
   <RestrictedRoute type="private" path="/trips" exact component={AsyncTrips} />,
   <RestrictedRoute type="private" path="/trips/edit/:uid" exact component={AsyncTrip} />,
   <RestrictedRoute type="private" path="/trips/create" exact component={AsyncTrip} />,
+  <RestrictedRoute type="private" path="/trips/all_trips" exact component={AsyncAllTrips} />,
   //<RestrictedRoute type="private" path="/signin" exact component={AsyncSignIn} />
 ]
 

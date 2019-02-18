@@ -1,5 +1,4 @@
 import * as AuthActions from '../store/actions/authActions'
-//import { isAuthorised } from '../utils/auth';
 
 export function AuthReducer(state = [], action) {
   switch (action.type) {

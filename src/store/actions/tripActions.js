@@ -18,6 +18,9 @@ export const GET_TRIP = '[Trip] GET_TRIP'
 export const GET_TRIP_SUCCESS = '[Trip] GET_TRIP_SUCCESS' 
 export const GET_TRIP_ERROR = '[Trip] GET_TRIP_ERROR' 
 
+export const GET_ALL_TRIPS = '[Trips] GET_ALL_TRIPS' 
+export const GET_ALL_TRIPS_SUCCESS = '[Trips] GET_ALL_TRIPS_SUCCESS' 
+export const GET_ALL_TRIPS_ERROR = '[Trips] GET_ALL_TRIPS_ERROR' 
 
 //Update
 export const START_EDITING ='[Trip] START_EDITING'
@@ -83,6 +86,26 @@ export function GetTripsSuccess(trips){
     return {
         type:GET_TRIPS_SUCCESS,
         trips: trips,
+        loadingTrips: false
+    }
+}
+
+export function GetAllTrips(){
+    return (dispatch, getState) => {
+        tripService.getAll().then(res => {
+          dispatch(GetTripsSuccess(res))
+        })
+        dispatch({
+          type: GET_ALL_TRIPS,
+          loadingTrips: true
+        });
+    }
+}
+
+export function GetAllTripsSuccess(trips){
+    return {
+        type:GET_ALL_TRIPS_SUCCESS,
+        all_trips: trips,
         loadingTrips: false
     }
 }

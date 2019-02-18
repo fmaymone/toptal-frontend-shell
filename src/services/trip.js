@@ -29,6 +29,19 @@ export default class TripService {
         }
     }
 
+    async getAll() {
+        this._auth.throwWhenUnauthenticated();
+        try {
+            let response = await this._client.get("/admin/get_all_trips", this.defaultConfig());
+            console.log("[listAllTrips]: " + response.data);
+            return response.data;
+        }
+        catch(ex) {
+            console.log(ex.message)
+            return [];
+        }
+    }
+
     async create(trip) {
         this._auth.throwWhenUnauthenticated();
         try {

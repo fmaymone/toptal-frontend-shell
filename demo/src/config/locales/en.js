@@ -1,7 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 const messages = defineMessages({
-  app_name: 'React Most Wanted',
+  default: 'Default',
+  app_name: 'TopTal Trips',
   dashboard: 'Dashboard',
   about: 'About',
   page_not_found_demo: 'Page not found demo',
@@ -147,6 +148,12 @@ const messages = defineMessages({
   document: 'Document',
   collection: 'Collection',
   infinitelist: 'Infinitelist',
+  red: 'Red',
+  green: 'Green',
+  night_mode: 'Night Mode',
+  day_mode: 'Day Mode',
+  install: 'install',
+  all_trips: 'All Trips'
 
 });
 

@@ -19,7 +19,7 @@ import * as TripActions from '../../store/actions/tripActions'
 import { bindActionCreators } from 'redux'
 import TripSearch from './TripSearch'
 
-class Trips extends Component {
+class TripList extends Component {
   constructor() {
     super()
     this.state = {
@@ -27,15 +27,7 @@ class Trips extends Component {
     }
   }
 
-  componentDidMount() {
-    this.fetchData()
-  }
-
-  fetchData() {
-    this.props.actions.GetTrips()
-    this.setState({ isLoading: false })
-  };
-
+ 
   getDayCountsToStart(trip) {
     const start_date = new Date(trip.start_date)
     const now = new Date()
@@ -56,16 +48,13 @@ class Trips extends Component {
     this.setState({
       tripFilter
     })
-
   }
 
   renderList(trips) {
     const { history, auth } = this.props
-    console.log(this.state.filteredTrips)
-
     const tripFilter = this.state.tripFilter;
     
-    if (trips === undefined) {
+    if (trips === undefined || !Array.isArray(trips)) {
       return <div />
     }
 
@@ -149,16 +138,15 @@ class Trips extends Component {
   }
 }
 
-Trips.propTypes = {
+TripList.propTypes = {
   history: PropTypes.object,
   isGranted: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {
-  const { auth, trips, isLoading } = state
+  const { auth, isLoading } = state
 
   return {
-    trips,
     isLoading,
     auth,
     isGranted: grant => isGranted(state, grant),
@@ -175,4 +163,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(injectIntl(withTheme()(withRouter((Trips)))))
+)(injectIntl(withTheme()(withRouter((TripList)))))

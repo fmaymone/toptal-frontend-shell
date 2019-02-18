@@ -15,7 +15,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
 import { withRouter } from 'react-router-dom';
 import * as AuthActions from '../../store/actions/authActions'
-import { bindActionCreators } from 'redux'; 
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -83,7 +83,7 @@ class SignIn extends Component {
   }
 
   handleClose = () => {
-    const {setDialogIsOpen} = this.props.actions
+    const { setDialogIsOpen } = this.props.actions
     setDialogIsOpen('login_error', false)
   }
 
@@ -94,11 +94,10 @@ class SignIn extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-      //await Auth.signIn(this.state.email, this.state.password);
-      //alert("Logged in");
-      const { email, password } = this.state;
-      this.props.Login(email, password, this.props.history);
-      console.log(this.state);
+
+    const { email, password } = this.state;
+    this.props.Login(email, password, this.props.history);
+
 
   }
 
@@ -145,23 +144,23 @@ class SignIn extends Component {
           </Button>
           </form>
           <Dialog
-          open={dialogs.login_error === true}
-          onClose={this.handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-comment"
-        >
-          <DialogTitle id="login-dialog-title">Login Error</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-comment">
-              {auth.error && auth.error.message}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary" >
-              Close
+            open={dialogs.login_error === true}
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-comment"
+          >
+            <DialogTitle id="login-dialog-title">Login Error</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-comment">
+                {auth.error && auth.error.message}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary" >
+                Close
             </Button>
-          </DialogActions>
-        </Dialog>
+            </DialogActions>
+          </Dialog>
         </Paper>
       </main>
     );
@@ -187,7 +186,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators({setDialogIsOpen}, dispatch),
+    actions: bindActionCreators({ setDialogIsOpen }, dispatch),
     Login: (email, pw, history) => dispatch(AuthActions.Login(email, pw, history))
   }
 }
