@@ -30,7 +30,8 @@ export default class AuthService {
             });
             this._authenticated = true;
             this._authToken = response.data.auth_token;
-            return this._authToken;
+            //return this._authToken;
+            return response
         }
         catch(ex) {
             console.log(ex.message);

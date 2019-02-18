@@ -8,7 +8,7 @@ export function AuthReducer(state = [], action) {
       return {
           ...state,
           isAuthorised: true,
-          loginResponse: action.loginResponse,
+          loginResponse: action.loginResponse.data,
           loginError: false
       };
     }
