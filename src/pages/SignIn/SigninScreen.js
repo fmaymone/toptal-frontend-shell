@@ -17,6 +17,13 @@ import { withRouter } from 'react-router-dom';
 import * as AuthActions from '../../store/actions/authActions'
 import { bindActionCreators } from 'redux'; 
 import { connect } from 'react-redux';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { injectIntl } from 'react-intl'
+import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 
 const styles = theme => ({
   container: {
@@ -75,6 +82,10 @@ class SignIn extends Component {
     };
   }
 
+  handleClose = () => {
+    const {setDialogIsOpen} = this.props.actions
+    setDialogIsOpen('login_error', false)
+  }
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
@@ -86,7 +97,7 @@ class SignIn extends Component {
       //await Auth.signIn(this.state.email, this.state.password);
       //alert("Logged in");
       const { email, password } = this.state;
-      this.props.actions.Login(email, password, this.props.history);
+      this.props.Login(email, password, this.props.history);
       console.log(this.state);
 
   }
@@ -97,7 +108,7 @@ class SignIn extends Component {
 
   render() {
 
-    const { classes } = this.props;
+    const { classes, auth, intl, dialogs } = this.props;
 
     return (
       <main className={classes.main}>
@@ -133,6 +144,24 @@ class SignIn extends Component {
               Sign in
           </Button>
           </form>
+          <Dialog
+          open={dialogs.login_error === true}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-comment"
+        >
+          <DialogTitle id="login-dialog-title">Login Error</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-comment">
+              {auth.error && auth.error.message}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary" >
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
         </Paper>
       </main>
     );
@@ -144,9 +173,12 @@ SignIn.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const { email, password, history } = state;
+  const { email, password, history, auth, intl, dialogs } = state;
 
   return {
+    intl,
+    auth,
+    dialogs,
     email,
     password,
     history
@@ -155,8 +187,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(AuthActions, dispatch)     
+    actions: bindActionCreators({setDialogIsOpen}, dispatch),
+    Login: (email, pw, history) => dispatch(AuthActions.Login(email, pw, history))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(SignIn)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withRouter(withStyles(styles)(SignIn))));

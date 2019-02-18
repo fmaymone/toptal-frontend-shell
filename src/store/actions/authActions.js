@@ -1,5 +1,5 @@
 import { authService } from '../../services/toptal-api'
-
+import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 //SignUp
 export const SIGNUP_SUCCESS = '[Trip] SIGNUP_SUCCESS' 
 export const SIGNUP_ERROR = '[Trip] SIGNUP_ERROR'
@@ -55,6 +55,7 @@ export function Login(email, password, history) {
         dispatch(LoginSuccess(res, history));
       }).catch(err => {
         dispatch(LoginError(err));
+        dispatch(setDialogIsOpen('login_error', true))
       });
       dispatch({
         type: LOGIN
