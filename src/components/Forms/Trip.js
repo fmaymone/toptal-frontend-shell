@@ -3,17 +3,13 @@ import AvatarImageField from 'rmw-shell/lib/components/ReduxFormFields/AvatarIma
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import  ImageCropDialog  from '../../containers/ImageCropDialog'
 import { TextField, DatePicker } from 'redux-form-material-ui'
 import { connect } from 'react-redux'
 import { injectIntl, intlShape } from 'react-intl'
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 import { withRouter } from 'react-router-dom'
 import { withTheme } from '@material-ui/core/styles'
-
-import { MuiPickersUtilsProvider } from 'material-ui-pickers'
-import { TimePicker } from 'material-ui-pickers'
-import { DateTimePicker } from 'material-ui-pickers'
+import DateField from '../../components/ReduxFormFields/DateField'
 
 
 
@@ -77,8 +73,8 @@ class Form extends Component {
               label={intl.formatMessage({ id: 'start_date_label' })}
               ref='start_date'
               withRef
-              type="date"
-              component={TextField} 
+             // type="date"
+              component={DateField} 
 
             />
           </div>
@@ -87,12 +83,13 @@ class Form extends Component {
             <Field
               name='end_date'
               disabled={!initialized}
-              component={TextField}
               placeholder={intl.formatMessage({ id: 'end_date_hint' })}
               label={intl.formatMessage({ id: 'end_date_label' })}
               ref='end_date'
               withRef
-              type="date"
+              //type="date"
+              component={DateField}
+              
             />
           </div>
 
@@ -131,11 +128,11 @@ const selector = formValueSelector('trip')
 const mapStateToProps = (state, ownProps) => {
   const { intl, vehicleTypes, users, dialogs } = state
 
-  let propsFormated = ownProps.initValues
-  if (ownProps.initValues !== undefined){
-    propsFormated.start_date = new Date(ownProps.initValues.start_date).toISOString().split('T')[0];
-    propsFormated.end_date = new Date(ownProps.initValues.end_date).toISOString().split('T')[0];
-  }
+  // let propsFormated = ownProps.initValues
+  // if (ownProps.initValues !== undefined){
+  //   propsFormated.start_date = new Date(ownProps.initValues.start_date).toISOString().split('T')[0];
+  //   propsFormated.end_date = new Date(ownProps.initValues.end_date).toISOString().split('T')[0];
+  // }
   
   
 
@@ -144,7 +141,7 @@ const mapStateToProps = (state, ownProps) => {
     vehicleTypes,
     users,
     dialogs,
-    initialValues: propsFormated
+    initialValues: ownProps.initValues
     
   }
 }
