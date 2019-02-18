@@ -3,14 +3,6 @@
 import {tripService} from "../../services/toptal-api"
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 
-//SignUp
-export const SIGNUP_SUCCESS = '[Trip] SIGNUP_SUCCESS' 
-export const SIGNUP_ERROR = '[Trip] SIGNUP_ERROR'
-
-//Login
-export const LOGIN_SUCCESS = '[Trip] LOGIN_SUCCESS' 
-export const LOGIN_ERROR = '[Trip] LOGIN_ERROR'
-
 //Create
 export const CREATE_TRIP = '[Trip] CREATE_TRIP' 
 export const CREATE_TRIP_SUCCESS = '[Trip] CREATE_TRIP_SUCCESS' 
@@ -26,6 +18,9 @@ export const GET_TRIP = '[Trip] GET_TRIP'
 export const GET_TRIP_SUCCESS = '[Trip] GET_TRIP_SUCCESS' 
 export const GET_TRIP_ERROR = '[Trip] GET_TRIP_ERROR' 
 
+export const GET_ALL_TRIPS = '[Trips] GET_ALL_TRIPS' 
+export const GET_ALL_TRIPS_SUCCESS = '[Trips] GET_ALL_TRIPS_SUCCESS' 
+export const GET_ALL_TRIPS_ERROR = '[Trips] GET_ALL_TRIPS_ERROR' 
 
 //Update
 export const START_EDITING ='[Trip] START_EDITING'
@@ -43,59 +38,20 @@ export const DELETE_TRIP = '[Trip] DELETE_TRIP'
 export const DELETE_TRIP_SUCCESS = '[Trip] DELETE_TRIP_SUCCESS' 
 export const DELETE_TRIP_ERROR = '[Trip] DELETE_TRIP_ERROR' 
 
-
-export function SignUpSuccess(user) {
-    return {
-        type: SIGNUP_SUCCESS,
-        user: user
-    }
-}
-
-export function SignUpError() {
-    return {
-        type: SIGNUP_ERROR
-    }
-}
- 
-export function SignUp(name, email, password, password_confirmation) {
-    return (dispatch, getState) => {
-        return tripService.signUp(name, email, password, password_confirmation).then(res => {
-            if (res) {
-                dispatch(SignUpSuccess({name: name, email: email, password: password}))
-            } else {
-                dispatch(SignUpError())
-            }
-        })
-    }
-}
-
-export function LoginSuccess(token) {
-    return {
-        type: LOGIN_SUCCESS,
-        token: token
-    }
-}
-
-export function Login(email, password) {
-    return (dispatch, getState) => {
-        return tripService.login(email, password).then( token => {
-            dispatch(LoginSuccess(token))
-        })
-    }
-}
-
-export function CreateTrip(trip){
+export function CreateTrip(trip, history){
     return (dispatch, getState) => {
         return tripService.create(trip).then(res => {
-            dispatch(CreateTripSuccess(res))
+            dispatch(CreateTripSuccess(res, history))
+            history.push("/trips")
         })
     }
 }
 
-export function CreateTripSuccess(trip){
+export function CreateTripSuccess(trip, history){
     return {
         type:CREATE_TRIP_SUCCESS,
-        trip
+        trip,
+        history
     }
 }
 
@@ -134,6 +90,26 @@ export function GetTripsSuccess(trips){
     }
 }
 
+export function GetAllTrips(){
+    return (dispatch, getState) => {
+        tripService.getAll().then(res => {
+          dispatch(GetTripsSuccess(res))
+        })
+        dispatch({
+          type: GET_ALL_TRIPS,
+          loadingTrips: true
+        });
+    }
+}
+
+export function GetAllTripsSuccess(trips){
+    return {
+        type:GET_ALL_TRIPS_SUCCESS,
+        all_trips: trips,
+        loadingTrips: false
+    }
+}
+
 export function StartEditing(_id) {
     return {
         type: START_EDITING,
@@ -147,7 +123,7 @@ export function CancelEditing(_id) {
     }
 }
 
-export function UpdateTrip(trip) {
+export function UpdateTrip(trip, history) {
     return (dispatch, getState) => {
         dispatch({
             type: UPDATE_TRIP,
@@ -155,6 +131,7 @@ export function UpdateTrip(trip) {
         })
         tripService.update(trip).then(() => {
             dispatch(UpdateTripSuccess(trip))
+            history.push("/trips")
         })
     }
 }

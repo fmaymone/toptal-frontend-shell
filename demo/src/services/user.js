@@ -58,19 +58,6 @@ export default class UserService {
     }
   }
 
-  async updateRole(userId, newRole) {
-    this._auth.throwWhenUnauthenticated();
-    try {
-      let response = await this._client.put(`/users/${userId}/role`, 
-        { role: newRole }, this.defaultConfig());
-      console.log("[updateRole]: ok");
-    }
-    catch(ex) {
-      console.log(ex.message)
-      throw ex;
-    }
-  }
-
   async delete(userId) {
     this._auth.throwWhenUnauthenticated();
     try {

@@ -155,7 +155,7 @@ class LandingPage extends Component {
           <meta name="theme-color" content={theme.palette.primary.main} />
           <meta name="apple-mobile-web-app-status-bar-style" content={theme.palette.primary.main} />
           <meta name="msapplication-navbutton-color" content={theme.palette.primary.main} />
-          <title>REACT MOST WANTED</title>
+          <title>Toptal Trips</title>
         </Helmet>
         <AppBar position="static">
           <Toolbar disableGutters>
@@ -174,18 +174,6 @@ class LandingPage extends Component {
                 <LockIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip id="tooltip-icon2" title="GitHub repository">
-              <IconButton
-                name="github"
-                aria-label="Open Github"
-                color="inherit"
-                href="https://github.com/TarikHuber/react-most-wanted"
-                target="_blank"
-                rel="noopener"
-              >
-                <GitHubIcon />
-              </IconButton>
-            </Tooltip>
           </Toolbar>
         </AppBar>
 
@@ -202,7 +190,7 @@ class LandingPage extends Component {
                   gutterBottom
                   className={classes.title}
                 >
-                  {'REACT MOST WANTED'}
+                  {'Toptal Trips'}
                 </Typography>
                 <Typography variant="headline" component="h2" color="inherit" gutterBottom className={classes.headline}>
                   {'React Starter-Kit with all Most Wanted features.'}

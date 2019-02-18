@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
-import { Activity } from 'rmw-shell'
+import  Activity  from '../../containers/Activity/Activity'
 import { withTheme, withStyles } from '@material-ui/core/styles'
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 import TripForm from '../../components/Forms/Trip';
@@ -56,10 +56,16 @@ class Trip extends Component {
   }
 
   handleSave = (values) => {
+    const { history, trips, uid } = this.props
     if(values.id){
-      this.props.UpdateTrip(values);
+      const trip = trips.filter(u => u.id == uid)[0];
+      trip.destination = values.destination
+      trip.start_date = values.start_date
+      trip.end_date = values.end_date
+      trip.comment = values.comment
+      this.props.UpdateTrip(values, history);
     }else{
-      this.props.CreateTrip(values);
+      this.props.CreateTrip(values, history);
     }
     
   }
@@ -120,12 +126,6 @@ class Trip extends Component {
         <div style={{ margin: 15, display: 'flex' }}>
           <TripForm  
             onSubmit={this.handleSave}
-            onSubmitSuccess={values => {
-              history.push("/trips");
-            }}
-            onDelete={values => {
-              history.push("/trips");
-            }}
             initValues = {trip}
           />
         </div>
@@ -191,12 +191,12 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
       actions: bindActionCreators( {setDialogIsOpen, change, submit}, dispatch ),
-      UpdateTrip: trip => dispatch(TripActions.UpdateTrip(trip)),
-      CreateTrip: trip => dispatch(TripActions.CreateTrip(trip)),
+      UpdateTrip: (trip, history) => dispatch(TripActions.UpdateTrip(trip, history)),
+      CreateTrip: (trip, history) => dispatch(TripActions.CreateTrip(trip, history)),
       DeleteTrip: (id, history) => dispatch(TripActions.DeleteTrip(id, history))
   }
 }
 
 export default connect(
   mapStateToProps, mapDispatchToProps
-)(injectIntl(withRouter(withFirebase(withTheme()(withStyles(styles, { withTheme: true })(Trip))))))
+)(injectIntl(withRouter(withTheme()(withStyles(styles, { withTheme: true })(Trip)))))

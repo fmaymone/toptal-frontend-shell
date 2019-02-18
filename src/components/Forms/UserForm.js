@@ -11,6 +11,12 @@ import withAppConfigs from '../../utils/withAppConfigs'
 import { withStyles } from '@material-ui/core/styles'
 import { GoogleIcon, FacebookIcon, GitHubIcon, TwitterIcon } from '../../components/Icons'
 import { intlShape } from 'react-intl'
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import { Button } from '@material-ui/core';
 
 const styles = theme => ({
   avatar: {
@@ -70,10 +76,23 @@ class UserForm extends Component {
     }
   }
 
+  handleSubmit() {
+
+  }
+
   render() {
-    const { intl, handleAdminChange, isAdmin, classes, appConfig, values } = this.props
+    const { intl, handleRuleChange, isAdmin, classes, appConfig, values } = this.props
+
+    const role = (values.role == null) ? "regular" : values.role; 
 
     return (
+      <form onSubmit={this.handleSubmit} style={{
+        height: '100%',
+        alignItems: 'strech',
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
+      }}>
       <div className={classes.root}>
         {values.photoURL && (
           <Avatar alt={''} src={values.photoURL} className={classNames(classes.avatar, classes.bigAvatar)} />
@@ -84,44 +103,45 @@ class UserForm extends Component {
             <Person style={{ fontSize: 60 }} />{' '}
           </Avatar>
         )}
-
-        <div>
-          {appConfig.firebase_providers.map((p, i) => {
-            if (p !== 'email' && p !== 'password' && p !== 'phone') {
-              return (
-                <IconButton key={i} disabled={!this.isLinkedWithProvider(p)} color="primary">
-                  {this.getProviderIcon(p)}
-                </IconButton>
-              )
-            } else {
-              return <div key={i} />
-            }
-          })}
-        </div>
+        
         <br />
 
         <Typography variant="h4" gutterBottom>
-          {values.displayName}
+          {values.name}
+        </Typography>
+        <Typography variant="h5" gutterBottom>
+          {values.email}
         </Typography>
 
         <div>
-          <FormControlLabel
-            control={<Switch checked={isAdmin} onChange={handleAdminChange} />}
-            label={intl.formatMessage({ id: 'is_admin_label' })}
-          />
+        <FormControl component="fieldset" className={classNames.formControl}>
+          <RadioGroup
+            aria-label="Role"
+            name="role1"
+            className={classNames.group}
+            value={role}
+            onChange={this.props.handleRoleChange}
+            row
+          >
+            <FormControlLabel value="admin" control={<Radio />} label="Administrator" labelPlacement="bottom"/>
+            <FormControlLabel value="manager" control={<Radio />} label="User Manager" labelPlacement="bottom"/>
+            <FormControlLabel value="regular" control={<Radio />} label="Regular" labelPlacement="bottom"/>
+          </RadioGroup>
+        </FormControl>
         </div>
       </div>
+      </form>
     )
   }
 }
 
 UserForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  handleAdminChange: PropTypes.func.isRequired,
-  isAdmin: PropTypes.bool.isRequired,
-  intl: intlShape.isRequired,
-  initialized: PropTypes.bool.isRequired,
-  uid: PropTypes.string.isRequired
+  // handleSubmit: PropTypes.func.isRequired,
+  // handleAdminChange: PropTypes.func.isRequired,
+  // isAdmin: PropTypes.bool.isRequired,
+  // intl: intlShape.isRequired,
+  // initialized: PropTypes.bool.isRequired,
+  // uid: PropTypes.string.isRequired
 }
 
 export default withAppConfigs(withStyles(styles, { withTheme: true })(UserForm))

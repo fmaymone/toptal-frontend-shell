@@ -24,6 +24,9 @@ import { setSimpleValue } from '../../store/simpleValues/actions'
 import { withFirebase } from 'firekit-provider'
 import { withRouter } from 'react-router-dom'
 import { withTheme, withStyles } from '@material-ui/core/styles'
+import * as UserActions from '../../store/actions/userActions'
+import { bindActionCreators } from 'redux';
+
 
 const path = '/users'
 
@@ -46,29 +49,13 @@ const styles = theme => ({
 
 export class User extends Component {
   state = {
-    values: {}
+    values: {},
+    users: null,
+    role: 'regular'
   }
 
   componentDidMount() {
-    const { watchList, uid, firebaseApp } = this.props
-    watchList('admins')
-    watchList('user_grants')
-
-    firebaseApp
-      .database()
-      .ref(`users/${uid}`)
-      .on('value', snap => {
-        this.setState({ values: snap.val() })
-      })
-  }
-
-  componentWillUnmount() {
-    const { firebaseApp, uid } = this.props
-
-    firebaseApp
-      .database()
-      .ref(`users/${uid}`)
-      .off()
+    const { uid } = this.props
   }
 
   handleTabActive = (e, value) => {
@@ -81,22 +68,12 @@ export class User extends Component {
     }
   }
 
-  handleAdminChange = (e, isInputChecked) => {
-    const { firebaseApp, match } = this.props
-    const uid = match.params.uid
 
-    if (isInputChecked) {
-      firebaseApp
-        .database()
-        .ref(`/admins/${uid}`)
-        .set(true)
-    } else {
-      firebaseApp
-        .database()
-        .ref(`/admins/${uid}`)
-        .remove()
-    }
-  }
+  handleRoleChange = event => {
+    let user = this.props.users.user;
+    user.role = event.target.value
+    this.props.UpdateRole(user.id, user.role);
+  };
 
   render() {
     const {
@@ -109,20 +86,15 @@ export class User extends Component {
       setFilterIsOpen,
       hasFilters,
       isLoading,
-      classes
+      classes,
+      users
     } = this.props
 
+    
     const uid = match.params.uid
-    let isAdmin = false
-
-    if (admins !== undefined) {
-      for (let admin of admins) {
-        if (admin.key === uid) {
-          isAdmin = true
-          break
-        }
-      }
-    }
+    let isAdmin = false;
+    if (!users.updating)
+     isAdmin = users.user.role === 'admin';
 
     return (
       <Activity
@@ -159,13 +131,13 @@ export class User extends Component {
                 <Tab value="grants" icon={<Lock className="material-icons" />} />
               </Tabs>
             </AppBar>
-
-            {editType === 'profile' && (
+             
+            {!users.updating && editType === 'profile' && (
               <div className={classes.form}>
                 <UserForm
-                  handleAdminChange={this.handleAdminChange}
+                  handleRoleChange={this.handleRoleChange}
                   isAdmin={isAdmin}
-                  values={this.state.values ? this.state.values : {}}
+                  values={users.user ? users.user : {}}
                   {...this.props}
                 />
               </div>
@@ -191,7 +163,7 @@ User.propTypes = {
 const selector = formValueSelector('user')
 
 const mapStateToProps = (state, ownProps) => {
-  const { auth, intl, filters } = state
+  const { auth, intl, filters, users } = state
   const { match } = ownProps
 
   const uid = match.params.uid
@@ -222,11 +194,20 @@ const mapStateToProps = (state, ownProps) => {
     displayName,
     admins: getList(state, 'admins'),
     user: getPath(state, `users/${uid}`),
-    isLoading: isLoadingRoles || isLoadingGrants
+    isLoading: isLoadingRoles || isLoadingGrants,
+    users
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      actions: bindActionCreators({ setSimpleValue, change, submit, ...filterActions }, dispatch),
+      GetUser: (uid) => dispatch(UserActions.GetUser(uid)),
+      UpdateUser: (user) => dispatch(UserActions.UpdateUser(user)),
+      UpdateRole: (uid, role) => dispatch(UserActions.UpdateRole(uid, role))
   }
 }
 
 export default connect(
-  mapStateToProps,
-  { setSimpleValue, change, submit, ...filterActions }
+  mapStateToProps, mapDispatchToProps
 )(injectIntl(withRouter(withFirebase(withStyles(styles, { withTheme: true })(withTheme()(User))))))

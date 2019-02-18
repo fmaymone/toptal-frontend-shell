@@ -24,7 +24,10 @@ export const CANCEL_EDITING_USER = '[User] CANCEL_EDITING_USER'
 
 export const UPDATE_USER = '[User] UPDATE_USER' 
 export const UPDATE_USER_SUCCESS = '[User] UPDATE_USER_SUCCESS' 
-export const UPDATE_USER_ERROR = '[User] UPDATE_USER_ERROR' 
+export const UPDATE_USER_ERROR = '[User] UPDATE_USER_ERROR'
+
+export const UPDATE_ROLE = '[User] UPDATE_ROLE'
+export const UPDATE_ROLE_SUCCESS = '[User] UPDATE_ROLE_SUCCESS'
 
 export const COMPLETE_USER = 'COMPLETE_USER'
 
@@ -49,18 +52,22 @@ export function CreateUserSuccess(user){
     }
 }
 
-export function GetUser(id){
+export function GetUser(id, history){
     return (dispatch, getState) => {
-        return userService.get(id).then(res => {
-            dispatch(GetUserSuccess(res))
+        userService.get(id).then(res => {
+            dispatch(GetUserSuccess(res, history))
+        })
+        dispatch({
+            type: GET_USERS
         })
     }
 }
 
-export function GetUserSuccess(user){
+export function GetUserSuccess(user, history){
     return {
         type:GET_USER_SUCCESS,
-        user
+        user,
+        history
     }
 }
 
@@ -108,6 +115,27 @@ export function UpdateUser(user) {
         })
     }
 }
+
+export function UpdateRole(userId, newRole) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: UPDATE_ROLE,
+            userId: userId
+        })
+        userService.updateRole(userId, newRole).then(() => {
+            dispatch(UpdateRoleSuccess(userId, newRole))
+        })
+    }
+}
+
+export function UpdateRoleSuccess(userId, newRole) {
+    return {
+        type: UPDATE_ROLE_SUCCESS,
+        userId,
+        newRole
+    }
+}
+
 export function UpdateUserSuccess(user) {
     return {
         type: UPDATE_USER_SUCCESS,
