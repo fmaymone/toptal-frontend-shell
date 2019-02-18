@@ -81,7 +81,6 @@ export class User extends Component {
       intl,
       theme,
       match,
-      admins,
       editType,
       setFilterIsOpen,
       hasFilters,
@@ -90,35 +89,15 @@ export class User extends Component {
       users
     } = this.props
 
-    
+
     const uid = match.params.uid
     let isAdmin = false;
     if (!users.updating)
-     isAdmin = users.user.role === 'admin';
+      isAdmin = users.user.role === 'admin';
 
     return (
       <Activity
         isLoading={isLoading}
-        appBarContent={
-          <div>
-            {editType === 'grants' && (
-              <div style={{ display: 'flex' }}>
-                <SearchField filterName={'user_grants'} />
-
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  onClick={() => setFilterIsOpen('user_grants', true)}
-                >
-                  <FilterList
-                    className="material-icons"
-                    color={hasFilters ? theme.palette.accent1Color : theme.palette.canvasColor}
-                  />
-                </IconButton>
-              </div>
-            )}
-          </div>
-        }
         onBackClick={() => history.push('/users')}
         title={intl.formatMessage({ id: 'edit_user' })}
       >
@@ -127,11 +106,9 @@ export class User extends Component {
             <AppBar position="static">
               <Tabs value={editType} onChange={this.handleTabActive} fullWidth centered>
                 <Tab value="profile" icon={<Person className="material-icons" />} />
-                <Tab value="roles" icon={<AccountBox className="material-icons" />} />
-                <Tab value="grants" icon={<Lock className="material-icons" />} />
-              </Tabs>
+               </Tabs>
             </AppBar>
-             
+
             {!users.updating && editType === 'profile' && (
               <div className={classes.form}>
                 <UserForm
@@ -142,8 +119,6 @@ export class User extends Component {
                 />
               </div>
             )}
-            {editType === 'roles' && <UserRoles {...this.props} />}
-            {editType === 'grants' && <UserGrants {...this.props} />}
           </div>
         </Scrollbar>
       </Activity>
@@ -201,10 +176,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      actions: bindActionCreators({ setSimpleValue, change, submit, ...filterActions }, dispatch),
-      GetUser: (uid) => dispatch(UserActions.GetUser(uid)),
-      UpdateUser: (user) => dispatch(UserActions.UpdateUser(user)),
-      UpdateRole: (uid, role) => dispatch(UserActions.UpdateRole(uid, role))
+    actions: bindActionCreators({ setSimpleValue, change, submit, ...filterActions }, dispatch),
+    GetUser: (uid) => dispatch(UserActions.GetUser(uid)),
+    UpdateUser: (user) => dispatch(UserActions.UpdateUser(user)),
+    UpdateRole: (uid, role) => dispatch(UserActions.UpdateRole(uid, role))
   }
 }
 

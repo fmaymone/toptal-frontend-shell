@@ -41,58 +41,14 @@ const styles = theme => ({
 })
 
 class UserForm extends Component {
-  isLinkedWithProvider = provider => {
-    const { auth } = this.props
-
-    try {
-      return (
-        auth &&
-        auth.providerData &&
-        auth.providerData.find(p => {
-          return p.providerId === provider
-        }) !== undefined
-      )
-    } catch (e) {
-      return false
-    }
-  }
-
-  getProviderIcon = p => {
-    switch (p) {
-    case 'google.com':
-      return <GoogleIcon />
-
-    case 'facebook.com':
-      return <FacebookIcon />
-
-    case 'twitter.com':
-      return <TwitterIcon />
-
-    case 'github.com':
-      return <GitHubIcon />
-
-    default:
-      return undefined
-    }
-  }
-
-  handleSubmit() {
-
-  }
 
   render() {
-    const { intl, handleRuleChange, isAdmin, classes, appConfig, values } = this.props
+    const { classes, values } = this.props
 
     const role = (values.role == null) ? "regular" : values.role; 
 
     return (
-      <form onSubmit={this.handleSubmit} style={{
-        height: '100%',
-        alignItems: 'strech',
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center'
-      }}>
+     
       <div className={classes.root}>
         {values.photoURL && (
           <Avatar alt={''} src={values.photoURL} className={classNames(classes.avatar, classes.bigAvatar)} />
@@ -130,7 +86,6 @@ class UserForm extends Component {
         </FormControl>
         </div>
       </div>
-      </form>
     )
   }
 }
