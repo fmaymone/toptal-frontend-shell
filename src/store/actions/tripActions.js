@@ -100,7 +100,7 @@ export function CancelEditing(_id) {
     }
 }
 
-export function UpdateTrip(trip) {
+export function UpdateTrip(trip, history) {
     return (dispatch, getState) => {
         dispatch({
             type: UPDATE_TRIP,
@@ -108,6 +108,7 @@ export function UpdateTrip(trip) {
         })
         tripService.update(trip).then(() => {
             dispatch(UpdateTripSuccess(trip))
+            history.push("/trips")
         })
     }
 }

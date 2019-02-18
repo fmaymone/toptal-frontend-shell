@@ -56,9 +56,14 @@ class Trip extends Component {
   }
 
   handleSave = (values) => {
-    const { history } = this.props
+    const { history, trips, uid } = this.props
     if(values.id){
-      this.props.UpdateTrip(values);
+      const trip = trips.filter(u => u.id == uid)[0];
+      trip.destination = values.destination
+      trip.start_date = values.start_date
+      trip.end_date = values.end_date
+      trip.comment = values.comment
+      this.props.UpdateTrip(values, history);
     }else{
       this.props.CreateTrip(values, history);
     }
@@ -186,7 +191,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
       actions: bindActionCreators( {setDialogIsOpen, change, submit}, dispatch ),
-      UpdateTrip: trip => dispatch(TripActions.UpdateTrip(trip)),
+      UpdateTrip: (trip, history) => dispatch(TripActions.UpdateTrip(trip, history)),
       CreateTrip: (trip, history) => dispatch(TripActions.CreateTrip(trip, history)),
       DeleteTrip: (id, history) => dispatch(TripActions.DeleteTrip(id, history))
   }

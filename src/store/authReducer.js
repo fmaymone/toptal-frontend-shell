@@ -8,14 +8,16 @@ export function AuthReducer(state = [], action) {
       return {
           ...state,
           isAuthorised: true,
-          loginResponse: action.loginResponse
+          loginResponse: action.loginResponse,
+          loginError: false
       };
     }
 
     case AuthActions.LOGIN_ERROR: {
         return {
-          isAuthorosed: false,
-          error: action.error
+          isAuthorised: false,
+          error: action.error,
+          loginError: true
         }
     }
 
