@@ -128,14 +128,6 @@ const selector = formValueSelector('trip')
 const mapStateToProps = (state, ownProps) => {
   const { intl, vehicleTypes, users, dialogs } = state
 
-  // let propsFormated = ownProps.initValues
-  // if (ownProps.initValues !== undefined){
-  //   propsFormated.start_date = new Date(ownProps.initValues.start_date).toISOString().split('T')[0];
-  //   propsFormated.end_date = new Date(ownProps.initValues.end_date).toISOString().split('T')[0];
-  // }
-  
-  
-
   return {
     intl,
     vehicleTypes,

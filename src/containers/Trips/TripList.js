@@ -28,22 +28,30 @@ class TripList extends Component {
   }
 
  
-  getDayCountsToStart(trip) {
-    const start_date = new Date(trip.start_date)
-    const now = new Date()
-    const end_date = new Date(trip.end_date)
-    const diff = Math.floor(
-      (Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) -
-        Date.UTC(start_date.getFullYear(), start_date.getMonth(), start_date.getDate())) /
-        (1000 * 60 * 60 * 24)
-    )
-    if (diff < 0) {
-      return `Trip starts in ${Math.abs(diff)} days`
-    } else {
-      return `Trip finished in ${end_date.toLocaleDateString()}`
-    }
-  }
+  getSecondaryText(trip, type){
 
+    if (type == false){
+      const start_date = new Date(trip.start_date)
+      const now = new Date()
+      const end_date = new Date(trip.end_date)
+      const diff = Math.floor(
+        (Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) -
+          Date.UTC(start_date.getFullYear(), start_date.getMonth(), start_date.getDate())) /
+          (1000 * 60 * 60 * 24)
+      )
+      if (diff < 0) {
+        return `Trip starts in ${Math.abs(diff)} days`
+      } else {
+        return `Trip finished in ${end_date.toLocaleDateString()}`
+      }
+    }else{
+      return trip.user.name
+    }
+
+
+  }
+  
+  
   filterTrips = (tripFilter) => {
     this.setState({
       tripFilter
@@ -51,8 +59,8 @@ class TripList extends Component {
   }
 
   renderList(trips) {
-    const { history, auth } = this.props
-    const tripFilter = this.state.tripFilter;
+    const { history } = this.props
+    const tripFilter = this.state.tripFilter
     
     if (trips === undefined || !Array.isArray(trips)) {
       return <div />
@@ -74,7 +82,7 @@ class TripList extends Component {
           >
             <ListItemText
               primary={trip.destination}
-              secondary={this.getDayCountsToStart(trip)}
+              secondary={this.getSecondaryText(trip, this.props.admin_list)}
             />
           </ListItem>
           <Divider inset />
@@ -119,7 +127,7 @@ class TripList extends Component {
             <div
               style={{ position: 'fixed', right: 18, zIndex: 3, bottom: 18 }}
             >
-              {isAuthorised && (
+              {!this.props.admin_list && (
                 <Button
                   variant="fab"
                   color="secondary"
@@ -128,6 +136,19 @@ class TripList extends Component {
                   }}
                 >
                   <Icon className="material-icons">add</Icon>
+                </Button>
+              )}
+            </div>
+            <div
+              style={{ position: 'fixed', right: 128, zIndex: 3, bottom: 18 }}
+            >
+              {!this.props.admin_list && (
+                <Button
+                  variant="fab"
+                  color="secondary"
+                  onClick={this.props.handleGenerateTripReport}
+                >
+                  <Icon className="material-icons">archive</Icon>
                 </Button>
               )}
             </div>

@@ -10,26 +10,27 @@ import * as TripActions from '../../store/actions/tripActions'
 import { bindActionCreators } from 'redux'
 import TripList from '../../containers/Trips/TripList'
 
-
 class UserTrips extends Component {
   constructor() {
     super()
-    this.state = {
-    }
+    this.state = {}
   }
 
   componentDidMount() {
     this.fetchData()
   }
 
+  generateTripReport = () => {
+    console.log('Generate Trip Report')
+  };
+
   fetchData() {
     this.props.actions.GetTrips()
     this.setState({ isLoading: false })
-  };
+  }
 
- 
   render() {
-    const { intl, theme, history, isAuthorised, trips } = this.props
+    const { trips } = this.props
 
     const { isLoading } = this.state
 
@@ -37,16 +38,17 @@ class UserTrips extends Component {
       return <div />
     } else {
       return (
-          <TripList trips={trips} />
+        <TripList
+          trips={trips}
+          admin_list={false}
+          handleGenerateTripReport={this.generateTripReport}
+        />
       )
     }
   }
 }
 
-UserTrips.propTypes = {
-  history: PropTypes.object,
-  isGranted: PropTypes.func.isRequired
-}
+UserTrips.propTypes = {}
 
 const mapStateToProps = state => {
   const { auth, trips, isLoading } = state
@@ -58,15 +60,15 @@ const mapStateToProps = state => {
     isGranted: grant => isGranted(state, grant),
     isAuthorised: auth.isAuthorised
   }
-};
+}
 
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(TripActions, dispatch)
   }
-};
+}
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(injectIntl(withTheme()(withRouter((UserTrips)))))
+)(injectIntl(withTheme()(withRouter(UserTrips))))

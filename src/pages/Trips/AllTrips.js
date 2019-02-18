@@ -29,7 +29,7 @@ class AllTrips extends Component {
 
  
   render() {
-    const { intl, theme, history, isAuthorised, trips } = this.props
+    const { trips } = this.props
 
     const { isLoading } = this.state
 
@@ -37,7 +37,7 @@ class AllTrips extends Component {
       return <div />
     } else {
       return (
-          <TripList trips={trips} />
+          <TripList trips={trips} admin_list = {true}/>
       )
     }
   }
