@@ -95,7 +95,6 @@ class Trips extends Component {
   }
 
   print = () => {
-    //document.print()
     const {trips} = this.props
     const now = new Date()
     let month = now.getMonth();
