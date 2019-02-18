@@ -141,9 +141,9 @@ class LandingPage extends Component {
   componentDidMount() {
     const { history } = this.props
 
-    if (this.isAuthorised()) {
-      history.push('/signin')
-    }
+    // if (this.isAuthorised()) {
+    //   history.push('/signin')
+    // }
   }
 
   render() {
@@ -180,7 +180,7 @@ class LandingPage extends Component {
         <div className={classes.root}>
           <div className={classes.hero}>
             <div className={classes.content}>
-              <img src="/rmw.svg" alt="Material-UI Logo" className={classes.logo} />
+
               <div className={classes.text}>
                 <Typography
                   variant="display2"
@@ -193,96 +193,18 @@ class LandingPage extends Component {
                   {'Toptal Trips'}
                 </Typography>
                 <Typography variant="headline" component="h2" color="inherit" gutterBottom className={classes.headline}>
-                  {'React Starter-Kit with all Most Wanted features.'}
+                  {'Here starts the trip of your life'}
                 </Typography>
                 <Button
                   onClick={() => {
-                    history.push('/signin')
+                    history.push('/signup')
                   }}
                   className={classes.button}
                   variant="outlined"
                   color="primary"
                 >
-                  {'Get Started'}
+                  {'Sign Up'}
                 </Button>
-              </div>
-
-              <div className={classes.cardsContent}>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Typography variant="headline" component="h2">
-                      Installation
-                    </Typography>
-                    <br />
-                    <Typography>{'Just run this script to start:'}</Typography>
-                    <br />
-                    <Typography className={classes.pos} color="textSecondary">
-                      {' '}
-                      npx create-react-app test-app --scripts-version rmw-react-scripts{' '}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      onClick={() => {
-                        var win = window.open('https://github.com/TarikHuber/rmw-shell', '_blank')
-                        win.focus()
-                      }}
-                    >
-                      Learn More
-                    </Button>
-                  </CardActions>
-                </Card>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Typography variant="headline" component="h2">
-                      Usage
-                    </Typography>
-                    <br />
-                    <Typography>{'Set your configuration to the App component:'}</Typography>
-                    <br />
-                    <Typography className={classes.pos} color="textSecondary">
-                      {'import App from \'rmw-shell\''}
-                      <br />
-                      {'<App appConfig={{ configureStore, ...config }} />'}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      onClick={() => {
-                        var win = window.open('https://github.com/TarikHuber/react-most-wanted', '_blank')
-                        win.focus()
-                      }}
-                    >
-                      Learn More
-                    </Button>
-                  </CardActions>
-                </Card>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Typography variant="headline" component="h2">
-                      What is this?
-                    </Typography>
-                    <Typography noWrap={false} color="textSecondary">
-                      {`This is a OPEN SOURCE demo application that demonstartes the usage of the rmw-shell library 
-                    with react, Material-UI and firebase.  `}
-                      <br />
-                      {` This demo has no purpose to do something as an app. 
-                    It is here just to show how everthing works together. `}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      onClick={() => {
-                        history.push('/signin')
-                      }}
-                    >
-                      Get started
-                    </Button>
-                  </CardActions>
-                </Card>
               </div>
             </div>
           </div>

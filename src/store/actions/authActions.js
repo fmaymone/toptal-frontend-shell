@@ -9,10 +9,11 @@ export const LOGIN = '[Trip] LOGIN'
 export const LOGIN_SUCCESS = '[Trip] LOGIN_SUCCESS'
 export const LOGIN_ERROR = '[Trip] LOGIN_ERROR'
 
-export function SignUpSuccess(user) {
+export function SignUpSuccess(user, history) {
   return {
     type: SIGNUP_SUCCESS,
-    user: user
+    user: user,
+    history
   }
 }
 
@@ -22,11 +23,11 @@ export function SignUpError() {
   }
 }
 
-export function SignUp(name, email, password, password_confirmation) {
+export function SignUp(name, email, password, password_confirmation, history) {
   return (dispatch, getState) => {
     return authService.signUp(name, email, password, password_confirmation).then(res => {
       if (res) {
-        dispatch(SignUpSuccess({ name: name, email: email, password: password }));
+        dispatch(SignUpSuccess({ name: name, email: email, password: password }, history));
       } else {
         dispatch(SignUpError());
       }

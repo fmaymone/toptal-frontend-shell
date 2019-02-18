@@ -21,6 +21,7 @@ export function AuthReducer(state = [], action) {
     }
 
     case AuthActions.SIGNUP_SUCCESS: {
+      action.history.push("/signin");
         return { 
             ...state, 
             user: action.user

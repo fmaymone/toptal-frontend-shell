@@ -18,20 +18,7 @@ const config = {
   onAuthStateChanged: undefined,
   notificationsReengagingHours: 48,
   firebaseLoad: () => import('./firebase'),
-  getNotifications: (notification, props) => {
-    const { history } = props
-    return {
-      chat: {
-        path: 'chats',
-        autoClose: 5000,
-        //getNotification: () => <div>YOUR CUSTOM NOTIFICATION COMPONENT</div>,
-        onClick: () => {
-          history.push('/chats')
-        },
-        ...notification
-      }
-    }
-  }
+
 }
 
 export default config

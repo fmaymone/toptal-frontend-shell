@@ -61,7 +61,7 @@ const getMenuItems = (props) => {
   })
 
   //TODO Needs to come from our API
-  const isAuthMenu = false;
+  const isAuthMenu = !isAuthorised;
   if (isAuthMenu) {
     return [
       {
