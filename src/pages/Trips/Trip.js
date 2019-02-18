@@ -194,4 +194,4 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(
   mapStateToProps, mapDispatchToProps
-)(injectIntl(withRouter(withFirebase(withTheme()(withStyles(styles, { withTheme: true })(Trip))))))
+)(injectIntl(withRouter(withTheme()(withStyles(styles, { withTheme: true })(Trip)))))

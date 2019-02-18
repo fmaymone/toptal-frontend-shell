@@ -20,4 +20,4 @@ export class SignIn extends Component {
   }
 }
 
-export default injectIntl(withFirebase(withAppConfigs(SignIn)))
+export default injectIntl(withAppConfigs(SignIn))

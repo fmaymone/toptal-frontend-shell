@@ -13,7 +13,10 @@ export function AuthReducer(state = [], action) {
     }
 
     case AuthActions.LOGIN_ERROR: {
-        return action.error;
+        return {
+          isAuthorosed: false,
+          error: action.error
+        }
     }
 
     case AuthActions.SIGNUP_SUCCESS: {

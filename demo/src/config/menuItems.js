@@ -19,7 +19,7 @@ const getMenuItems = (props) => {
     updateLocale,
     intl,
     themeSource,
-    //auth,
+    auth,
     isGranted,
     deferredPrompt,
     isAppInstallable,
@@ -29,8 +29,8 @@ const getMenuItems = (props) => {
   } = props
 
   //TODO needs to come from our API
-  //const isAuthorised = auth.isAuthorised
-  const isAuthorised = true
+  const isAuthorised = auth.isAuthorised
+  //const isAuthorised = true
   
 
   const themeItems = allThemes.map((t) => {

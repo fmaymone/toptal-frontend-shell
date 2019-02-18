@@ -15,7 +15,7 @@ import {UserListReducer} from './userReducer'
 import {AuthReducer} from './authReducer'
 
 export const appReducers = {
-  ...firekitReducers,
+  //...firekitReducers,
   dialogs,
   filters: filterReducer,
   form: formReducer,
