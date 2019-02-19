@@ -113,10 +113,11 @@ export function GetMonthlyReportSuccess(res){
     }
 }
 
-export function GetMonthlyReport(month){
+export function GetMonthlyReport(month, callback){
     return (dispatch, getState) => {
         tripService.getMonthlyReport(month).then(res => {
           dispatch(GetMonthlyReportSuccess(res))
+          callback(res.url);
         })
         dispatch({
           type: GET_MONTHLY_REPORT

@@ -102,7 +102,9 @@ export default class TripService {
         try {
             let response = await this._client.get(`/print_monthly_trips/${month}`, this.defaultConfig());
             console.log("[getMonthlyReport]: ok");
-            return response.data;
+            return {
+                url: `${this._client.defaults.baseURL}/${response.data.url}`
+            };
         }
         catch(ex) {
             console.log(ex.message)
