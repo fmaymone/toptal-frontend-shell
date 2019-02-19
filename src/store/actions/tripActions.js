@@ -22,6 +22,10 @@ export const GET_ALL_TRIPS = '[Trips] GET_ALL_TRIPS'
 export const GET_ALL_TRIPS_SUCCESS = '[Trips] GET_ALL_TRIPS_SUCCESS' 
 export const GET_ALL_TRIPS_ERROR = '[Trips] GET_ALL_TRIPS_ERROR' 
 
+export const GET_MONTHLY_REPORT = '[Trips] GET_MONTHLY_REPORT'
+export const GET_MONTHLY_REPORT_SUCCESS = '[Trips] GET_MONTHLY_REPORT_SUCCESS'
+export const GET_MONTHLY_REPORT_ERROR = '[Trips] GET_MONTHLY_REPORT_ERROR'
+
 //Update
 export const START_EDITING ='[Trip] START_EDITING'
 export const CANCEL_EDITING = '[Trip] CANCEL_EDITING'
@@ -98,6 +102,24 @@ export function GetAllTrips(){
         dispatch({
           type: GET_ALL_TRIPS,
           loadingTrips: true
+        });
+    }
+}
+
+export function GetMonthlyReportSuccess(res){
+    return {
+        type:GET_MONTHLY_REPORT_SUCCESS,
+        url: res.url
+    }
+}
+
+export function GetMonthlyReport(month){
+    return (dispatch, getState) => {
+        tripService.getMonthlyReport(month).then(res => {
+          dispatch(GetMonthlyReportSuccess(res))
+        })
+        dispatch({
+          type: GET_MONTHLY_REPORT
         });
     }
 }

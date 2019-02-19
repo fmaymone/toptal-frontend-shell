@@ -36,6 +36,24 @@ export function TripListReducer(state = [], action) {
 
 		}
 
+		case TripActions.GET_MONTHLY_REPORT: {
+
+			return {
+				...state,
+				loadingMonthlyReport: true
+			} 
+
+		}
+
+		case TripActions.GET_MONTHLY_REPORT_SUCCESS: {
+
+			return {
+				...state,
+				url: action.url,
+				loadingMonthlyReport: false
+			}
+
+		}
 		
 		case TripActions.START_EDITING: {
 

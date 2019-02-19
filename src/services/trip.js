@@ -96,4 +96,17 @@ export default class TripService {
             throw ex;
         }
     }
+
+    async getMonthlyReport(month) {
+        this._auth.throwWhenUnauthenticated();
+        try {
+            let response = await this._client.get(`/print_monthly_trips/${month}`, this.defaultConfig());
+            console.log("[getMonthlyReport]: ok");
+            return response.data;
+        }
+        catch(ex) {
+            console.log(ex.message)
+            throw ex;
+        }
+    }
 }

@@ -21,7 +21,10 @@ class UserTrips extends Component {
   }
 
   generateTripReport = () => {
-    console.log('Generate Trip Report')
+    const now = Date();
+    let month = now.getMonth() + 1;
+    month = month == 12 ? 1 : month + 1;
+    this.props.actions.GetMonthlyReport(month);
   };
 
   fetchData() {
