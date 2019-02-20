@@ -100,7 +100,7 @@ const getMenuItems = (props) => {
       leftIcon: <Icon className='material-icons' >All Trips</Icon>
     },
     {
-      visible: isAdmin, // In prod: isGranted('administration'),
+      visible: isAdmin || isManager, // In prod: isGranted('administration'),
       primaryTogglesNestedList: true,
       primaryText: intl.formatMessage({ id: 'administration' }),
       leftIcon: <Icon className='material-icons' >security</Icon>,

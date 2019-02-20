@@ -116,7 +116,7 @@ class UserForm extends Component {
           {/* <Typography variant="h4" gutterBottom> 
           {values.name}
         </Typography> */}
-
+          <Chip label={values.email}  variant="outlined" />
           <FormControl margin="normal" required>
             <InputLabel htmlFor="name">Name</InputLabel>
             <Input
@@ -127,7 +127,7 @@ class UserForm extends Component {
               onChange={this.handleNameChange}
             />
           </FormControl>
-          <Chip label={values.email}  variant="outlined" />
+         
    
 
           <div>
