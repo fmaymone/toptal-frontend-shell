@@ -1,7 +1,7 @@
 {
   "name": "toptal-trips",
   "version": "1.0.0",
-  "description": "Toptal tripsß",
+  "description": "Toptal trips",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [

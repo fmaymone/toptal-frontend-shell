@@ -21,7 +21,7 @@ class MyAccount extends Component {
   render() {
     const { intl, auth, users } = this.props;
     return (
-      <LoadingComponent/>
+      <div></div>
     )
   }
 }
