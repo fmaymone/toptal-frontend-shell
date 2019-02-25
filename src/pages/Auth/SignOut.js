@@ -9,13 +9,15 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
 export class SignOut extends Component {
+  componentDidMount(){
+
+  }
 
   render() {
     const { intl } = this.props
 
     return (
-      <Activity title={intl.formatMessage({ id: 'sign_out' })}>
-      </Activity>
+      <div></div>
     )
   }
 }
