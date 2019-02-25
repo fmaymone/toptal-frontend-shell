@@ -1,24 +1,25 @@
-import ArroWDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import ArroWDropUpIcon from '@material-ui/icons/ArrowDropUp'
-import Avatar from '@material-ui/core/Avatar'
-import ChevronLeft from '@material-ui/icons/ChevronLeft'
-import ChevronRight from '@material-ui/icons/ChevronRight'
-import ChromeReaderMode from '@material-ui/icons/ChromeReaderMode'
-import Hidden from '@material-ui/core/Hidden'
-import IconButton from '@material-ui/core/IconButton'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
-import Paper from '@material-ui/core/Paper'
-import PersonIcon from '@material-ui/icons/Person'
-import React from 'react'
-import withAppConfigs from '../../utils/withAppConfigs'
-import withWidth from '@material-ui/core/withWidth'
-import { compose } from 'redux'
-import { injectIntl } from 'react-intl'
-import { withStyles } from '@material-ui/core/styles'
+import ArroWDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArroWDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import Avatar from "@material-ui/core/Avatar";
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import ChevronRight from "@material-ui/icons/ChevronRight";
+import ChromeReaderMode from "@material-ui/icons/ChromeReaderMode";
+import Hidden from "@material-ui/core/Hidden";
+import IconButton from "@material-ui/core/IconButton";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import Paper from "@material-ui/core/Paper";
+import PersonIcon from "@material-ui/icons/Person";
+import React from "react";
+import withAppConfigs from "../../utils/withAppConfigs";
+import withWidth from "@material-ui/core/withWidth";
+import { compose } from "redux";
+import { injectIntl } from "react-intl";
+import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
 
 const styles = theme => ({
   paper: {
@@ -35,7 +36,7 @@ const styles = theme => ({
   button: {
     // width: 15
   }
-})
+});
 
 export const DrawerHeader = props => {
   const {
@@ -48,8 +49,9 @@ export const DrawerHeader = props => {
     drawer,
     setDrawerOpen,
     setDrawerUseMinified,
-    width
-  } = props
+    width,
+    history
+  } = props;
 
   return (
     <Paper className={classes.paper}>
@@ -63,10 +65,14 @@ export const DrawerHeader = props => {
                 </ListItemAvatar>
               )}
               {!auth.photoURL && (
-                <ListItemAvatar>
+                <ListItemAvatar
+                  onClick={() => {
+                    history.push('/my_account');
+                  }}
+                >
                   <Avatar>
-                    {' '}
-                    <PersonIcon />{' '}
+                    {" "}
+                    <PersonIcon />{" "}
                   </Avatar>
                 </ListItemAvatar>
               )}
@@ -74,7 +80,7 @@ export const DrawerHeader = props => {
                 <ListItemSecondaryAction>
                   <IconButton
                     onClick={() => {
-                      setDrawerOpen(false)
+                      setDrawerOpen(false);
                     }}
                   >
                     <ChromeReaderMode classes={{ root: classes.icon }} />
@@ -82,11 +88,15 @@ export const DrawerHeader = props => {
                   <IconButton
                     className={classes.button}
                     onClick={() => {
-                      setDrawerUseMinified(false)
+                      setDrawerUseMinified(false);
                     }}
                   >
-                    {theme.direction === 'rtl' && <ChevronRight classes={{ root: classes.icon }} />}
-                    {theme.direction !== 'rtl' && <ChevronLeft classes={{ root: classes.icon }} />}
+                    {theme.direction === "rtl" && (
+                      <ChevronRight classes={{ root: classes.icon }} />
+                    )}
+                    {theme.direction !== "rtl" && (
+                      <ChevronLeft classes={{ root: classes.icon }} />
+                    )}
                   </IconButton>
                 </ListItemSecondaryAction>
               </Hidden>
@@ -94,43 +104,57 @@ export const DrawerHeader = props => {
 
             <ListItem
               onClick={() => {
-                setDialogIsOpen('auth_menu', !dialogs.auth_menu)
+                setDialogIsOpen("auth_menu", !dialogs.auth_menu);
               }}
             >
-              {!drawer.open && width !== 'sm' && width !== 'xs' && auth.photoURL && (
-                <ListItemAvatar>
-                  <Avatar src={auth.photoURL} alt="person" style={{ marginLeft: -7, marginTop: 3 }} />
-                </ListItemAvatar>
-              )}
+              {!drawer.open &&
+                width !== "sm" &&
+                width !== "xs" &&
+                auth.photoURL && (
+                  <ListItemAvatar>
+                    <Avatar
+                      src={auth.photoURL}
+                      alt="person"
+                      style={{ marginLeft: -7, marginTop: 3 }}
+                    />
+                  </ListItemAvatar>
+                )}
 
-              {!drawer.open && width !== 'sm' && width !== 'xs' && !auth.photoURL && (
-                <ListItemAvatar>
-                  <Avatar style={{ marginLeft: -7, marginTop: 3 }}>
-                    {' '}
-                    <PersonIcon />{' '}
-                  </Avatar>
-                </ListItemAvatar>
-              )}
+              {!drawer.open &&
+                width !== "sm" &&
+                width !== "xs" &&
+                !auth.photoURL && (
+                  <ListItemAvatar>
+                    <Avatar style={{ marginLeft: -7, marginTop: 3 }}>
+                      {" "}
+                      <PersonIcon />{" "}
+                    </Avatar>
+                  </ListItemAvatar>
+                )}
 
               <ListItemText
-                classes={{ primary: classes.listItem, secondary: classes.listItem }}
-                style={{
-                  marginLeft: !drawer.open && width !== 'sm' && width !== 'xs' && auth.photoURL ? 7 : undefined
+                classes={{
+                  primary: classes.listItem,
+                  secondary: classes.listItem
                 }}
-                primary={auth.displayName}
+                style={{
+                  marginLeft:
+                    !drawer.open &&
+                    width !== "sm" &&
+                    width !== "xs" &&
+                    auth.photoURL
+                      ? 7
+                      : undefined
+                }}
+                primary={auth.loginResponse.email}
                 secondary={auth.email}
               />
               {drawer.open && (
                 <ListItemSecondaryAction
                   onClick={() => {
-                    setDialogIsOpen('auth_menu', !dialogs.auth_menu)
+                    setDialogIsOpen("auth_menu", !dialogs.auth_menu);
                   }}
-                >
-                  <IconButton>
-                    {dialogs.auth_menu && <ArroWDropUpIcon classes={{ root: classes.icon }} />}
-                    {!dialogs.auth_menu && <ArroWDropDownIcon classes={{ root: classes.icon }} />}
-                  </IconButton>
-                </ListItemSecondaryAction>
+                />
               )}
             </ListItem>
           </List>
@@ -140,17 +164,24 @@ export const DrawerHeader = props => {
       {!auth.isAuthorised && (
         <List>
           <ListItem>
-            <ListItemText classes={{ primary: classes.listItem }} primary={intl.formatMessage({ id: 'app_name' })} />
+            <ListItemText
+              classes={{ primary: classes.listItem }}
+              primary={intl.formatMessage({ id: "app_name" })}
+            />
             <Hidden smDown implementation="css">
               <ListItemSecondaryAction>
                 <IconButton
                   className={classes.button}
                   onClick={() => {
-                    setDrawerUseMinified(false)
+                    setDrawerUseMinified(false);
                   }}
                 >
-                  {theme.direction === 'rtl' && <ChevronRight classes={{ root: classes.icon }} />}
-                  {theme.direction !== 'rtl' && <ChevronLeft classes={{ root: classes.icon }} />}
+                  {theme.direction === "rtl" && (
+                    <ChevronRight classes={{ root: classes.icon }} />
+                  )}
+                  {theme.direction !== "rtl" && (
+                    <ChevronLeft classes={{ root: classes.icon }} />
+                  )}
                 </IconButton>
               </ListItemSecondaryAction>
             </Hidden>
@@ -158,12 +189,12 @@ export const DrawerHeader = props => {
         </List>
       )}
     </Paper>
-  )
-}
+  );
+};
 
 export default compose(
   injectIntl,
   withAppConfigs,
   withWidth(),
   withStyles(styles, { withTheme: true })
-)(DrawerHeader)
+)(withRouter(DrawerHeader));

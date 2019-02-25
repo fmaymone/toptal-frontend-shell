@@ -11,7 +11,8 @@ export default class AuthService {
 				name: name,
 				email: email,
 				password: password,
-				password_confirmation: passwordConfirmation
+				password_confirmation: passwordConfirmation,
+				id: id
 			});
 			this._authenticated = true;
 			this._authToken = response.data.auth_token;

@@ -104,14 +104,15 @@ export function CancelEditingUser(_id) {
 	}
 }
 
-export function UpdateUser(user, history) {
+export function UpdateUser(user, history, selfUser) {
 	return (dispatch, getState) => {
 		dispatch({
 			type: UPDATE_USER,
-			user: user
+			user: user,
+			selfUser: selfUser
 		})
 		userService.update(user).then(() => {
-			dispatch(UpdateUserSuccess(user, history))
+			dispatch(UpdateUserSuccess(user, history, selfUser))
 		})
 	}
 }
@@ -136,12 +137,13 @@ export function UpdateRoleSuccess(userId, newRole) {
 	}
 }
 
-export function UpdateUserSuccess(user, history) {
+export function UpdateUserSuccess(user, history, selfUser) {
 	return {
 		type: UPDATE_USER_SUCCESS,
 		user,
 		_id: user._id,
-		history
+		history,
+		selfUser: selfUser
 	}
 }
 

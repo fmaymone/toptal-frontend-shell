@@ -19,20 +19,20 @@ export function UserListReducer(state = [], action) {
       return {
         users: action.users,
         loadingUsers: false
-      }
+      };
     }
 
     case UserActions.GET_USER: {
       return {
         loadingUsers: true
-      }
+      };
     }
 
     case UserActions.GET_USER_SUCCESS: {
-      action.history.push(`/users/edit/${action.user.id}/profile`)
+      action.history.push(`/users/edit/${action.user.id}/profile`);
       return {
         user: action.user
-      }
+      };
     }
 
     case UserActions.UPDATE_USER: {
@@ -43,7 +43,11 @@ export function UserListReducer(state = [], action) {
     }
 
     case UserActions.UPDATE_USER_SUCCESS: {
-      action.history.push("/users");
+      if (action.selfUser === true) {
+        action.history.push("/my_account");
+      } else {
+        action.history.push("/users");
+      }
       return {
         user: action.user,
         updating: false
@@ -64,7 +68,7 @@ export function UserListReducer(state = [], action) {
         userId: action.userId,
         newRole: action.newRole,
         updating: false
-      }
+      };
     }
 
     case UserActions.DELETE_USER: {
@@ -118,8 +122,6 @@ const user = (state, action) => {
         editing: false
       };
     }
-
-    
 
     default: {
       return state;

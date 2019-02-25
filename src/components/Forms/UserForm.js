@@ -78,9 +78,9 @@ class UserForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { values } = this.props;
+    const { values, selfUser, auth } = this.props;
     const user = new UserModel(values.id, this.state.name, values.email);
-    this.props.actions.UpdateUser(user, this.props.history);
+    this.props.actions.UpdateUser(user, this.props.history, values.id == auth.loginResponse.id);
   };
 
   handleDelete = event => {
@@ -88,6 +88,49 @@ class UserForm extends Component {
     const { values } = this.props;
     this.props.actions.DeleteUser(values.id, this.props.history);
   };
+
+  renderMenuRoles(role) {
+    if(this.props.values.id === this.props.auth.loginResponse.id || this.props.values.id === undefined){
+      return <div></div>
+    }else{
+    return(
+      <div>
+        <FormControl
+              component="fieldset"
+              className={classNames.formControl}
+            >
+              <RadioGroup
+                aria-label="Role"
+                name="role1"
+                className={classNames.group}
+                value={role}
+                onChange={this.props.handleRoleChange}
+                row
+              >
+                <FormControlLabel
+                  value="admin"
+                  control={<Radio />}
+                  label="Administrator"
+                  labelPlacement="bottom"
+                />
+                <FormControlLabel
+                  value="manager"
+                  control={<Radio />}
+                  label="User Manager"
+                  labelPlacement="bottom"
+                />
+                <FormControlLabel
+                  value="regular"
+                  control={<Radio />}
+                  label="Regular"
+                  labelPlacement="bottom"
+                />
+              </RadioGroup>
+            </FormControl>
+      </div>
+    )
+  }
+  }
 
   render() {
     const { classes, values } = this.props;
@@ -128,41 +171,10 @@ class UserForm extends Component {
             />
           </FormControl>
          
-   
+          {this.renderMenuRoles(role)}
 
           <div>
-            <FormControl
-              component="fieldset"
-              className={classNames.formControl}
-            >
-              <RadioGroup
-                aria-label="Role"
-                name="role1"
-                className={classNames.group}
-                value={role}
-                onChange={this.props.handleRoleChange}
-                row
-              >
-                <FormControlLabel
-                  value="admin"
-                  control={<Radio />}
-                  label="Administrator"
-                  labelPlacement="bottom"
-                />
-                <FormControlLabel
-                  value="manager"
-                  control={<Radio />}
-                  label="User Manager"
-                  labelPlacement="bottom"
-                />
-                <FormControlLabel
-                  value="regular"
-                  control={<Radio />}
-                  label="Regular"
-                  labelPlacement="bottom"
-                />
-              </RadioGroup>
-            </FormControl>
+            
             <br />
             <div
               style={{ position: 'fixed', top:10 , right:50, zIndex: 21474836 }}

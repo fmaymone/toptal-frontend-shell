@@ -3,32 +3,21 @@ import Activity from "../../containers/Activity";
 import AltIconAvatar from "../../components/AltIconAvatar";
 import Divider from "@material-ui/core/Divider";
 import Email from "@material-ui/icons/Email";
-import FilterList from "@material-ui/icons/FilterList";
-import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import OfflinePin from "@material-ui/icons/OfflinePin";
-import Phone from "@material-ui/icons/Phone";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import ReactList from "react-list";
 import Scrollbar from "../../components/Scrollbar";
-import SearchField from "../../components/SearchField";
 import Toolbar from "@material-ui/core/Toolbar";
 import {
   FilterDrawer,
   filterSelectors,
   filterActions
 } from "material-ui-filter";
-import {
-  GoogleIcon,
-  FacebookIcon,
-  GitHubIcon,
-  TwitterIcon
-} from "../../components/Icons";
 import { connect } from "react-redux";
-import { getList, isLoading } from "firekit";
 import { injectIntl, intlShape } from "react-intl";
 import { withFirebase } from "firekit-provider";
 import { withRouter } from "react-router-dom";

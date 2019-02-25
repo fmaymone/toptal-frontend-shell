@@ -82,6 +82,12 @@ const getMenuItems = (props) => {
 
   return [
     {
+      value: '/my_account',
+      visible: isAuthorised,
+      primaryText: intl.formatMessage({ id: 'my_account' }),
+      leftIcon: <LockIcon />
+    },
+    {
       value: '/signout',
       visible: isAuthorised,
       primaryText: intl.formatMessage({ id: 'sign_out' }),
