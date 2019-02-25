@@ -25,10 +25,12 @@ class UserTrips extends Component {
     let month = now.getMonth() + 1;
     month = month == 12 ? 1 : month + 1;
     this.props.actions.GetMonthlyReport(month, this.onGetReportSuccess);
+    
   };
 
   onGetReportSuccess = (url) => {
     window.open(url, "_blank");
+    this.fetchData()
   }
 
   fetchData() {

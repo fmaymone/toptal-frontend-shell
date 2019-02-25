@@ -1,6 +1,6 @@
 {
   "name": "toptal-trips",
-  "version": "5.0.20",
+  "version": "1.0.0",
   "description": "Toptal tripsß",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -22,9 +22,12 @@
     "@material-ui/lab": "^3.0.0-alpha.25",
     "classnames": "^2.2.6",
     "expect": "^24.1.0",
+    "express": "^4.16.4",
+    "express-favicon": "^2.0.1",
     "firekit-provider": "^1.0.1",
     "history": "^4.7.2",
     "moment": "^2.24.0",
+    "path": "^0.12.7",
     "react-datepicker": "^2.1.0"
   },
   "peerDependencies": {
