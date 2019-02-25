@@ -16,6 +16,27 @@ const LPAsync = Loadable({
 
 const config = {
   
+  firebase_config: {
+    apiKey: "AIzaSyClErg5_br0n6rh863romTewtDXUwczYqQ",
+    authDomain: "toptal-trips.firebaseapp.com",
+    databaseURL: "https://toptal-trips.firebaseio.com",
+    projectId: "toptal-trips",
+    storageBucket: "toptal-trips.appspot.com",
+    messagingSenderId: "851204810915"
+  },
+  firebase_config_dev: {
+    apiKey: "AIzaSyClErg5_br0n6rh863romTewtDXUwczYqQ",
+    authDomain: "toptal-trips.firebaseapp.com",
+    databaseURL: "https://toptal-trips.firebaseio.com",
+    projectId: "toptal-trips",
+    storageBucket: "toptal-trips.appspot.com",
+    messagingSenderId: "851204810915"
+  },
+  firebase_providers: ['google.com', 'facebook.com', 'twitter.com', 'github.com', 'password', 'phone'],
+  initial_state: {
+    theme: 'dark',
+    locale: 'en'
+  },
   drawer_width: 256,
   routes,
   getMenuItems,
