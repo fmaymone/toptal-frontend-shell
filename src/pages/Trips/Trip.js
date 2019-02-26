@@ -108,7 +108,7 @@ class Trip extends Component {
               </IconButton>
             }
 
-            {(isAuthorised) &&
+            {(isAuthorised) && (match.params.uid) &&
               <IconButton
                 color="inherit"
                 aria-label="open drawer"

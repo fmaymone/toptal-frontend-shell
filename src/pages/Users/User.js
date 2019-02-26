@@ -95,7 +95,7 @@ export class User extends Component {
     return (
       <Activity
         isLoading={isLoading}
-        onBackClick={() => history.back()}
+        onBackClick={() => history.goBack()}
         title={intl.formatMessage({ id: "edit_user" })}
         
       >

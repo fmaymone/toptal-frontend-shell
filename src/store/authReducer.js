@@ -3,7 +3,6 @@ import * as AuthActions from '../store/actions/authActions'
 export function AuthReducer(state = [], action) {
   switch (action.type) {
     case AuthActions.LOGIN_SUCCESS: {
-      action.history.push("/trips");
       return {
           ...state,
           isAuthorised: true,
@@ -21,7 +20,6 @@ export function AuthReducer(state = [], action) {
     }
 
     case AuthActions.LOGOUT: {
-      action.history.push("/signin");
       return {
         ...state,
         isAuthorised: false,
@@ -30,7 +28,6 @@ export function AuthReducer(state = [], action) {
   }
 
     case AuthActions.SIGNUP_SUCCESS: {
-      action.history.push("/trips");
         return {
             ...state, 
             user: action.user,

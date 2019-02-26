@@ -30,6 +30,7 @@ export function SignUp(name, email, password, password_confirmation, history) {
     return authService.signUp(name, email, password, password_confirmation).then(res => {
       if (res) {
         dispatch(SignUpSuccess({ name: name, email: email, password: password }, res, history));
+        history.push("/trips");
       } else {
         dispatch(SignUpError());
       }
@@ -59,19 +60,21 @@ export function Logout(history) {
       type: LOGOUT,
       history
     });
+    history.push("/signin");
   }
 } 
 
 export function Login(email, password, history) {
   return (dispatch, getState) => {
+    dispatch({
+      type: LOGIN
+    });
     authService.login(email, password).then(res => {
       dispatch(LoginSuccess(res, history));
+      history.push("/trips");
     }).catch(err => {
       dispatch(LoginError(err));
       dispatch(setDialogIsOpen('login_error', true))
-    });
-    dispatch({
-      type: LOGIN
     });
   }
 }
