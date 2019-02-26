@@ -10,17 +10,9 @@ import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 import { withRouter } from 'react-router-dom'
 import { withTheme } from '@material-ui/core/styles'
 import DateField from '../../components/ReduxFormFields/DateField'
-
-
-
 import config from '../../config'
-const data = {
-  // used to populate "account" reducer when "Load" is clicked
-  destination: 'From Data',
-}
 
 class Form extends Component {
-
 
   render() {
     const {
