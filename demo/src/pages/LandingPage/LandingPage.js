@@ -140,7 +140,7 @@ class LandingPage extends Component {
 
   componentDidMount() {
     const { history } = this.props
-
+    this.isAuthorised()
     // if (this.isAuthorised()) {
     //   history.push('/signin')
     // }
