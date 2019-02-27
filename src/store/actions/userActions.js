@@ -138,6 +138,7 @@ export function UpdateRoleSuccess(userId, newRole) {
 }
 
 export function UpdateUserSuccess(user, history, selfUser) {
+	history.push('/users')
 	return {
 		type: UPDATE_USER_SUCCESS,
 		user,
