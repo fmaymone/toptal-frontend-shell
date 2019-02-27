@@ -121,8 +121,8 @@ const styles = theme => ({
 export class MyAccount extends Component {
   componentDidMount() {
     const { history, auth } = this.props;
-    //this.props.GetUser(auth.loginResponse.id, history);
-    history.push(`/users/edit/${auth.loginResponse.id}/profile`)
+    this.props.GetUser(auth.loginResponse.id, history);
+    //history.push(`/users/edit/${auth.loginResponse.id}/profile`)
   }
 
   render() {
@@ -147,7 +147,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    GetUser: uid => dispatch(UserActions.GetUser(uid))
+    GetUser: (uid, history) => dispatch(UserActions.GetUser(uid, history))
   }
 }
 

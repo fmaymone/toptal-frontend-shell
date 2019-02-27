@@ -42,12 +42,7 @@ export function UserListReducer(state = [], action) {
       };
     }
 
-    case UserActions.UPDATE_USER_SUCCESS: {
-      if (action.selfUser === true) {
-        action.history.push("/my_account");
-      } else {
-        action.history.push("/users");
-      }
+    case UserActions.UPDATE_USER_SUCCESS: {    
       return {
         user: action.user,
         updating: false
