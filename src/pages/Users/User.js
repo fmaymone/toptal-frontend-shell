@@ -1,19 +1,8 @@
-import AccountBox from "@material-ui/icons/AccountBox";
 import Activity from "../../containers/Activity";
-import AppBar from "@material-ui/core/AppBar";
-import FilterList from "@material-ui/icons/FilterList";
-import IconButton from "@material-ui/core/IconButton";
-import Lock from "@material-ui/icons/Lock";
-import Person from "@material-ui/icons/Person";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import Scrollbar from "../../components/Scrollbar";
-import SearchField from "../../components/SearchField";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
 import UserForm from "../../components/Forms/UserForm";
-import UserGrants from "../../containers/Users/UserGrants";
-import UserRoles from "../../containers/Users/UserRoles";
 import { change, submit } from "redux-form";
 import { connect } from "react-redux";
 import { filterSelectors, filterActions } from "material-ui-filter";
@@ -26,8 +15,7 @@ import { withRouter } from "react-router-dom";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import * as UserActions from "../../store/actions/userActions";
 import { bindActionCreators } from "redux";
-
-const path = "/users";
+import UserModel from "../../model/user";
 
 const styles = theme => ({
   root: {
@@ -68,6 +56,11 @@ export class User extends Component {
     user.role = event.target.value;
     this.props.UpdateRole(user.id, user.role);
   };
+  handleUpdate = (id,name,email) => {
+    const user = new UserModel(id, name, email);
+    this.props.UpdateUser(user, this.props.history);
+  }
+
 
   render() {
     const {
@@ -103,6 +96,7 @@ export class User extends Component {
                 isAdmin={isAdmin}
                 values={users.user ? users.user : {}}
                 handleDelete = {this.handleDelete}
+                handleUpdate = {this.handleUpdate}
                 {...this.props}
               />
             </div>
@@ -172,7 +166,8 @@ const mapDispatchToProps = dispatch => {
     ),
     GetUser: uid => dispatch(UserActions.GetUser(uid)),
     UpdateRole: (uid, role) => dispatch(UserActions.UpdateRole(uid, role)),
-    DeleteUser: (uid, history) => dispatch(UserActions.DeleteUser(uid, history))
+    DeleteUser: (uid, history) => dispatch(UserActions.DeleteUser(uid, history)),
+    UpdateUser: (uid, history) => dispatch(UserActions.UpdateUser(uid, history)),
   };
 };
 

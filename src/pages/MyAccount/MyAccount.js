@@ -1,158 +1,194 @@
-import Activity from '../../containers/Activity'
-import React, { Component } from 'react'
-import withStyles from '@material-ui/core/styles/withStyles';
-import withAppConfigs from '../../utils/withAppConfigs'
-import { injectIntl } from 'react-intl'
+import AccountBox from "@material-ui/icons/AccountBox";
+import Activity from "../../containers/Activity";
+import AppBar from "@material-ui/core/AppBar";
+import FilterList from "@material-ui/icons/FilterList";
+import IconButton from "@material-ui/core/IconButton";
+import Lock from "@material-ui/icons/Lock";
+import Person from "@material-ui/icons/Person";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import Scrollbar from "../../components/Scrollbar";
+import SearchField from "../../components/SearchField";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import UserForm from "../../components/Forms/UserForm";
+import UserGrants from "../../containers/Users/UserGrants";
+import UserRoles from "../../containers/Users/UserRoles";
+import { change, submit } from "redux-form";
+import { connect } from "react-redux";
+import { filterSelectors, filterActions } from "material-ui-filter";
+import { formValueSelector } from "redux-form";
+import { getList, isLoading, getPath } from "firekit";
+import { injectIntl, intlShape } from "react-intl";
+import { setSimpleValue } from "../../store/simpleValues/actions";
+import { withFirebase } from "firekit-provider";
+import { withRouter } from "react-router-dom";
+import { withTheme, withStyles } from "@material-ui/core/styles";
 import * as UserActions from "../../store/actions/userActions";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom';
+import { bindActionCreators } from "redux";
+import UserModel from "../../model/user";
+
+const path = "/users";
+
 const styles = theme => ({
-  main: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
   root: {
     flexGrow: 1,
-    flex: '1 0 100%'
-    // height: '100%',
-    // overflow: 'hidden'
+    backgroundColor: theme.palette.background.default
   },
-  hero: {
-    height: '100%',
-    // minHeight: '80vh',
-    flex: '0 0 auto',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: theme.palette.background.paper,
-    color: theme.palette.type === 'light' ? theme.palette.primary.dark : theme.palette.primary.main
+  tabs: {
+    flex: 1,
+    width: "100%"
   },
-  text: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  title: {
-    letterSpacing: '.7rem',
-    textIndent: '.7rem',
-    fontWeight: theme.typography.fontWeightLight,
-    [theme.breakpoints.only('xs')]: {
-      fontSize: 24,
-      letterSpacing: '.1em',
-      textIndent: '.1rem'
-    },
-    whiteSpace: 'nowrap'
-  },
-  headline: {
-    paddingLeft: theme.spacing.unit * 4,
-    paddingRight: theme.spacing.unit * 4,
-    marginTop: theme.spacing.unit,
-    maxWidth: 600,
-    textAlign: 'center',
-    [theme.breakpoints.only('xs')]: {
-      fontSize: 18
-    }
-  },
-  content: {
-    height: '100%',
-    // paddingTop: theme.spacing.unit * 8,
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: theme.spacing.unit
-    }
-  },
-  button: {
-    marginTop: theme.spacing.unit * 3
-  },
-  logo: {
-    color: 'red',
-    margin: `${theme.spacing.unit * 3}px 0 ${theme.spacing.unit * 4}px`,
-    width: '100%',
-    height: '40vw',
-    maxHeight: 250
-  },
-  steps: {
-    maxWidth: theme.spacing.unit * 130,
-    margin: 'auto'
-  },
-  step: {
-    padding: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 2}px`
-  },
-  stepIcon: {
-    marginBottom: theme.spacing.unit
-  },
-  markdownElement: {},
-  cardsContent: {
-    padding: 15,
-    display: 'flex',
-    justifyContent: 'space-around',
-    flexWrap: 'wrap',
-    [theme.breakpoints.only('xs')]: {
-      width: '100%',
-      padding: 0,
-      paddingTop: 15
-    }
-  },
-  card: {
-    minWidth: 275,
-    maxWidth: 350,
+  form: {
+    backgroundColor: theme.palette.background.default,
     margin: 15,
-    [theme.breakpoints.only('xs')]: {
-      width: '100%',
-      margin: 0,
-      marginTop: 7
-    }
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  cardTitle: {
-    marginBottom: 16,
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
+    display: "flex",
+    justifyContent: "center"
   }
-})
+});
 
 export class MyAccount extends Component {
+  state = {
+    values: {},
+    users: null,
+    role: "regular"
+  };
+
   componentDidMount() {
-    const { history, auth } = this.props;
-    this.props.GetUser(auth.loginResponse.id, history);
-    //history.push(`/users/edit/${auth.loginResponse.id}/profile`)
+    let user = this.props.auth.loginResponse.id;
+    this.props.GetProfile(user);
+  }
+  
+  handleDelete = () => {
+    let user = this.props.users.user;
+    let history = this.props.history;
+    this.props.DeleteUser(user.id, history);
+  };
+
+  handleRoleChange = event => {
+    let user = this.props.users.user;
+    user.role = event.target.value;
+    this.props.UpdateRole(user.id, user.role);
+  };
+
+  handleUpdate = (id,name,email) => {
+    const user = new UserModel(id, name, email);
+    this.props.UpdateProfile(user, this.props.history);
   }
 
   render() {
-    const { intl } = this.props
+    const {
+      history,
+      intl,
+      theme,
+      match,
+      editType,
+      setFilterIsOpen,
+      hasFilters,
+      isLoading,
+      classes,
+      users
+    } = this.props;
+
+    const uid = match.params.uid;
+    let isAdmin = false;
 
     return (
-      <div><h1>Loading</h1></div>
-    )
+      <Activity
+        isLoading={isLoading}
+        onBackClick={() => history.goBack()}
+        title={intl.formatMessage({ id: "my_account" })}
+        
+      >
+        <Scrollbar style={{ height: "100%" }}>
+          <div className={classes.root}>
+            <div className={classes.form}>
+              <UserForm
+                handleRoleChange={this.handleRoleChange}
+                isAdmin={isAdmin}
+                values={users.user ? users.user : {}}
+                handleDelete = {this.handleDelete}
+                handleUpdate = {this.handleUpdate}
+                {...this.props}
+              />
+            </div>
+          </div>
+        </Scrollbar>
+      </Activity>
+    );
   }
 }
 
-const mapStateToProps = (state) => {
-  const { history, intl, auth} = state;
+MyAccount.propTypes = {
+  // history: PropTypes.object,
+  // intl: intlShape.isRequired,
+  // //submit: PropTypes.func.isRequired,
+  // theme: PropTypes.object.isRequired,
+  // match: PropTypes.object.isRequired,
+  // admins: PropTypes.array.isRequired
+};
+
+const selector = formValueSelector("user");
+
+const mapStateToProps = (state, ownProps) => {
+  const { auth, intl, filters, users } = state;
+  const { match } = ownProps;
+
+  const uid = match.params.uid;
+  const editType = match.params.editType ? match.params.editType : "data";
+  const { hasFilters } = filterSelectors.selectFilterProps(
+    "user_grants",
+    filters
+  );
+  const isLoadingRoles = isLoading(state, "user_roles");
+  const isLoadingGrants = isLoading(state, "user_grants");
+  const rootPath = match.params.rootPath;
+  const rootUid = match.params.rootUid;
+
+  let photoURL = "";
+  let displayName = "";
+
+  if (selector) {
+    photoURL = selector(state, "photoURL");
+    displayName = selector(state, "displayName");
+  }
 
   return {
+    rootPath,
+    rootUid,
+    hasFilters,
+    auth,
+    uid,
+    editType,
     intl,
-    history,
-    auth
-    
-  }
-}
+    photoURL,
+    displayName,
+    admins: getList(state, "admins"),
+    user: getPath(state, `users/${uid}`),
+    isLoading: isLoadingRoles || isLoadingGrants,
+    users
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    GetUser: (uid, history) => dispatch(UserActions.GetUser(uid, history))
-  }
-}
+    actions: bindActionCreators(
+      { setSimpleValue, UserActions, change, submit, ...filterActions },
+      dispatch
+    ),
+    GetProfile: uid => dispatch(UserActions.GetProfile(uid)),
+    UpdateProfile: (uid, history) => dispatch(UserActions.UpdateProfile(uid, history)),
+    DeleteUser: (uid, history) => dispatch(UserActions.DeleteUser(uid, history))
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withRouter(withStyles(styles)(MyAccount))));
-
-
-
- 
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  injectIntl(
+    withRouter(
+      withFirebase(withStyles(styles, { withTheme: true })(withTheme()(MyAccount)))
+    )
+  )
+);

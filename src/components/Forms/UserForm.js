@@ -77,10 +77,9 @@ class UserForm extends Component {
   }
 
   handleSubmit = event => {
+    const {values} = this.props;
     event.preventDefault();
-    const { values, selfUser, auth } = this.props;
-    const user = new UserModel(values.id, this.state.name, values.email);
-    this.props.actions.UpdateUser(user, this.props.history, values.id == auth.loginResponse.id);
+    this.props.handleUpdate(values.id, this.state.name, values.email)
   };
 
 

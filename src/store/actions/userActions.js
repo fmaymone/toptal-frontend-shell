@@ -17,6 +17,9 @@ export const GET_USER = '[User] GET_USER'
 export const GET_USER_SUCCESS = '[User] GET_USER_SUCCESS'
 export const GET_USER_ERROR = '[User] GET_USER_ERROR'
 
+export const GET_PROFILE = '[Profile] GET_PROFILE'
+export const GET_PROFILE_SUCCESS = '[Profile] GET_PROFILE_SUCCESS'
+
 
 //Update
 export const START_EDITING_USER = '[User] START_EDITING_USER'
@@ -28,7 +31,7 @@ export const UPDATE_USER_ERROR = '[User] UPDATE_USER_ERROR'
 
 export const UPDATE_PROFILE = '[Profile] UPDATE_PROFILE'
 export const UPDATE_PROFILE_SUCCESS = '[Profile] UPDATE_PROFILE_SUCESS'
-export const UPDATE_PROFILE_ERROR = '[User] UPDATE_PROFILE_ERROR'
+export const UPDATE_PROFILE_ERROR = '[Profile] UPDATE_PROFILE_ERROR'
 
 export const UPDATE_ROLE = '[User] UPDATE_ROLE'
 export const UPDATE_ROLE_SUCCESS = '[User] UPDATE_ROLE_SUCCESS'
@@ -60,6 +63,7 @@ export function GetUser(id, history) {
 	return (dispatch, getState) => {
 		userService.get(id).then(res => {
 			dispatch(GetUserSuccess(res, history))
+			history.push(`/users/edit/${id}/profile`);
 		})
 		dispatch({
 			type: GET_USERS
@@ -67,11 +71,31 @@ export function GetUser(id, history) {
 	}
 }
 
+export function GetProfile(id) {
+	return (dispatch, getState) => {
+		userService.get(id).then(res => {
+			dispatch(GetProfileSuccess(res))
+		})
+		dispatch({
+			type: GET_PROFILE
+		})
+	}
+}
+
 export function GetUserSuccess(user, history) {
+	
 	return {
 		type: GET_USER_SUCCESS,
 		user,
 		history
+	}
+}
+
+export function GetProfileSuccess(user) {
+	
+	return {
+		type: GET_PROFILE_SUCCESS,
+		user
 	}
 }
 
@@ -108,15 +132,14 @@ export function CancelEditingUser(_id) {
 	}
 }
 
-export function UpdateUser(user, history, selfUser) {
+export function UpdateUser(user, history ) {
 	return (dispatch, getState) => {
 		dispatch({
 			type: UPDATE_USER,
-			user: user,
-			selfUser: selfUser
+			user: user
 		})
 		userService.update(user).then(() => {
-			dispatch(UpdateUserSuccess(user, history, selfUser))
+			dispatch(UpdateUserSuccess(user, history))
 		})
 	}
 }
@@ -141,14 +164,13 @@ export function UpdateRoleSuccess(userId, newRole) {
 	}
 }
 
-export function UpdateUserSuccess(user, history, selfUser) {
+export function UpdateUserSuccess(user, history) {
 	history.push('/users')
 	return {
 		type: UPDATE_USER_SUCCESS,
 		user,
 		_id: user._id,
 		history,
-		selfUser: selfUser
 	}
 }
 
@@ -183,18 +205,17 @@ export function DeleteUserError(error) {
 export function UpdateProfile(user, history) {
 	return (dispatch, getState) => {
 		dispatch({
-			type: UPDATE_USER,
-			user: user,
-			selfUser: selfUser
+			type: UPDATE_PROFILE,
+			user: user
 		})
 		userService.update(user).then(() => {
-			dispatch(UpdateUserSuccess(user, history))
+			dispatch(UpdateProfileSuccess(user, history))
 		})
 	}
 }
 
 export function UpdateProfileSuccess(user, history) {
-	history.push('/trips')
+	//history.push('/sign_in')
 	return {
 		type: UPDATE_PROFILE_SUCCESS,
 		user,
