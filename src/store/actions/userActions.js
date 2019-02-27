@@ -26,6 +26,10 @@ export const UPDATE_USER = '[User] UPDATE_USER'
 export const UPDATE_USER_SUCCESS = '[User] UPDATE_USER_SUCCESS'
 export const UPDATE_USER_ERROR = '[User] UPDATE_USER_ERROR'
 
+export const UPDATE_PROFILE = '[Profile] UPDATE_PROFILE'
+export const UPDATE_PROFILE_SUCCESS = '[Profile] UPDATE_PROFILE_SUCESS'
+export const UPDATE_PROFILE_ERROR = '[User] UPDATE_PROFILE_ERROR'
+
 export const UPDATE_ROLE = '[User] UPDATE_ROLE'
 export const UPDATE_ROLE_SUCCESS = '[User] UPDATE_ROLE_SUCCESS'
 
@@ -175,3 +179,27 @@ export function DeleteUserError(error) {
 		error: error
 	}
 }
+
+export function UpdateProfile(user, history) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: UPDATE_USER,
+			user: user,
+			selfUser: selfUser
+		})
+		userService.update(user).then(() => {
+			dispatch(UpdateUserSuccess(user, history))
+		})
+	}
+}
+
+export function UpdateProfileSuccess(user, history) {
+	history.push('/trips')
+	return {
+		type: UPDATE_PROFILE_SUCCESS,
+		user,
+		_id: user._id,
+		history,
+	}
+}
+

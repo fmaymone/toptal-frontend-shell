@@ -56,15 +56,11 @@ export class User extends Component {
   componentDidMount() {
     const { uid } = this.props;
   }
-
-  handleTabActive = (e, value) => {
-    const { history, uid, rootPath, rootUid } = this.props;
-
-    if (rootPath) {
-      history.push(`${path}/edit/${uid}/${value}/${rootPath}/${rootUid}`);
-    } else {
-      history.push(`${path}/edit/${uid}/${value}`);
-    }
+  
+  handleDelete = () => {
+    let user = this.props.users.user;
+    let history = this.props.history;
+    this.props.DeleteUser(user.id, history);
   };
 
   handleRoleChange = event => {
@@ -72,8 +68,6 @@ export class User extends Component {
     user.role = event.target.value;
     this.props.UpdateRole(user.id, user.role);
   };
-
-
 
   render() {
     const {
@@ -108,6 +102,7 @@ export class User extends Component {
                 handleRoleChange={this.handleRoleChange}
                 isAdmin={isAdmin}
                 values={users.user ? users.user : {}}
+                handleDelete = {this.handleDelete}
                 {...this.props}
               />
             </div>
@@ -172,11 +167,12 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(
-      { setSimpleValue, change, submit, ...filterActions },
+      { setSimpleValue, UserActions, change, submit, ...filterActions },
       dispatch
     ),
     GetUser: uid => dispatch(UserActions.GetUser(uid)),
-    UpdateRole: (uid, role) => dispatch(UserActions.UpdateRole(uid, role))
+    UpdateRole: (uid, role) => dispatch(UserActions.UpdateRole(uid, role)),
+    DeleteUser: (uid, history) => dispatch(UserActions.DeleteUser(uid, history))
   };
 };
 

@@ -83,11 +83,6 @@ class UserForm extends Component {
     this.props.actions.UpdateUser(user, this.props.history, values.id == auth.loginResponse.id);
   };
 
-  handleDelete = event => {
-    event.preventDefault();
-    const { values } = this.props;
-    this.props.actions.DeleteUser(values.id, this.props.history);
-  };
 
   renderMenuRoles(role) {
     if(this.props.values.id === this.props.auth.loginResponse.id || this.props.values.id === undefined){
@@ -198,7 +193,7 @@ class UserForm extends Component {
                 color="inherit"
                 className={classes.submit}
                 disabled={!this.validateForm()}
-                onClick={this.handleDelete}
+                onClick={this.props.handleDelete}
               >
                 <Icon className="material-icons">delete</Icon>
               </IconButton>
